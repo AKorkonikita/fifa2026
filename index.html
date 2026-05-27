@@ -20,8 +20,13 @@
         .bracket-group-card { border-color: #f59e0b; background-color: #161e2e; }
         .ko-date, .bg-title { font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px; text-align: center; font-weight: bold; }
         .bg-title { color: #f59e0b; }
-        .ko-team-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; font-size: 0.9rem; }
-        .ko-team-name { font-weight: 500; max-width: 155px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ko-team-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; font-size: 0.9rem; padding: 4px 6px; border-radius: 4px; transition: background 0.2s; }
+        
+        /* 🟢 HIGHLIGHT ΝΙΚΗΤΗ ΣΤΑ KNOCKOUTS */
+        .ko-winner-highlight { background-color: rgba(34, 197, 94, 0.18) !important; color: #4ade80 !important; font-weight: bold; }
+        .winner-check { color: #22c55e; margin-left: 5px; font-weight: bold; }
+
+        .ko-team-name { font-weight: 500; max-width: 155px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; }
         .ko-inputs { display: flex; gap: 4px; }
         .ko-score { width: 32px; background-color: #0b0f19; color: #fff; border: 1px solid #64748b; text-align: center; border-radius: 4px; padding: 4px; font-size: 0.85rem; font-weight: bold; }
         .ko-score.ext { border-color: #a855f7; }
@@ -111,7 +116,7 @@
             <ul>
                 <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.5%20%CE%94%CE%B9%CE%B5%CF%85%CE%B8%CE%AD%CF%84%CE%B7%CF%83%CE%B7%20%CF%84%CF%89%CE%BD%20%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B7%CE%BC%CE%AC%CF%84%CF%89%CE%BD" target="_blank">3.1.5 Διευθέτηση των στοιχημάτων</a></li>
                 <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.23.6%20%CE%95%CE%B9%CE%B4%CE%B9%CE%BA%CE%AC%20%CF%80%CE%B1%CE%B9%CE%BA%CF%84%CF%8E%CE%BD" target="_blank">3.1.23.6 Ειδικά παικτών</a></li>
-                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%91%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
+                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%9Be%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
             </ul>
         </div>
     </div>
@@ -186,7 +191,7 @@
             'D': ['ΗΠΑ 🇺🇸', 'Παραγουάη 🇵🇾', 'Αυστραλία 🇦🇺', 'Τουρκία 🇹🇷'],
             'E': ['Γερμανία 🇩🇪', 'Κουρασάο 🇨🇼', 'Ακτή Ελεφαντοστού 🇨🇮', 'Εκουαδόρ 🇪🇨'],
             'F': ['Ολλανδία 🇳🇱', 'Ιαπωνία 🇯🇵', 'Σουηδία 🇸🇪', 'Τυνησία 🇹🇳'],
-            'G': ['Βέλγio 🇧🇪', 'Αίγυπτος 🇪🇬', 'Ιράν 🇮🇷', 'Νέα Ζηλανδία 🇳🇿'],
+            'G': ['Βέλγιο 🇧🇪', 'Αίγυπτος 🇪🇬', 'Ιράν 🇮🇷', 'Νέα Ζηλανδία 🇳🇿'],
             'H': ['Ισπανία 🇪🇸', 'Πράσινο Ακρωτήριο 🇨🇻', 'Σαουδική Αραβία 🇸🇦', 'Ουρουγουάη 🇺🇾'],
             'I': ['Γαλλία 🇫🇷', 'Σενεγάλη 🇸🇳', 'Ιράκ 🇮🇶', 'Νορβηγία 🇳🇴'],
             'J': ['Αργεντινή 🇦🇷', 'Αλγερία 🇩🇿', 'Αυστρία 🇦🇹', 'Ιορδανία 🇯🇴'],
@@ -511,14 +516,24 @@
             updateAllKnockoutRounds();
         }
 
-        function getWinner(m) {
-            if (m.s1 === null || m.s2 === null) return "";
-            if (m.s1 > m.s2) return m.t1 || m.label1; if (m.s2 > m.s1) return m.t2 || m.label2;
+        // 🧠 ΣΥΝΑΡΤΗΣΗ ΕΥΡΕΣΗΣ ΝΙΚΗΤΗ ΜΕ ΕΛΕΓΧΟ ΓΙΑ ΠΑΡΑΤΑΣΗ/ΠΕΝΑΛΤΙ
+        function getWinnerDetails(m) {
+            if (m.s1 === null || m.s2 === null) return { winner: 0, name: "" };
+            if (m.s1 > m.s2) return { winner: 1, name: m.t1 || m.label1 };
+            if (m.s2 > m.s1) return { winner: 2, name: m.t2 || m.label2 };
             if (m.e1 !== null && m.e2 !== null) {
-                if (m.e1 > m.e2) return m.t1 || m.label1; if (m.e2 > m.e1) return m.t2 || m.label2;
-                if (m.p1 !== null && m.p2 !== null) { if (m.p1 > m.p2) return m.t1 || m.label1; return m.t2 || m.label2; }
+                if (m.e1 > m.e2) return { winner: 1, name: m.t1 || m.label1 };
+                if (m.e2 > m.e1) return { winner: 2, name: m.t2 || m.label2 };
+                if (m.p1 !== null && m.p2 !== null) {
+                    if (m.p1 > m.p2) return { winner: 1, name: m.t1 || m.label1 };
+                    return { winner: 2, name: m.t2 || m.label2 };
+                }
             }
-            return "";
+            return { winner: 0, name: "" };
+        }
+
+        function getWinner(m) {
+            return getWinnerDetails(m).name;
         }
 
         function updateAllKnockoutRounds() {
@@ -564,24 +579,34 @@
                 if (showExtAndPen && m.p1 !== null) scoreText += ` (πέν. ${m.p1}-${m.p2})`;
                 let currentOpta = m.linkOpta || defaultOptaLink;
 
+                // 🔍 ΥΠΟΛΟΓΙΣΜΟΣ ΚΛΑΣΗΣ ΓΙΑ ΤΟ ΠΡΑΣΙΝΟ HIGHLIGHT
+                let winnerInfo = getWinnerDetails(m);
+                let row1Class = (winnerInfo.winner === 1) ? "ko-winner-highlight" : "";
+                let row2Class = (winnerInfo.winner === 2) ? "ko-winner-highlight" : "";
+                let check1 = (winnerInfo.winner === 1) ? `<span class="winner-check">✓</span>` : "";
+                let check2 = (winnerInfo.winner === 2) ? `<span class="winner-check">✓</span>` : "";
+
                 div.innerHTML += `
                     <div class="ko-match-card">
                         <div class="ko-date">${m.name} | 📅 ${m.date}</div>
-                        <div class="ko-team-row"><span>${name1}</span>
+                        <div class="ko-team-row ${row1Class}">
+                            <span class="ko-team-name">${name1} ${check1}</span>
                             ${isAdmin ? `<div class="ko-inputs">
                                 <input type="number" class="ko-score" placeholder="90'" value="${m.s1!==null?m.s1:''}" onchange="updateKoScore('${roundKey}', ${index}, 's1', this.value)">
                                 ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e1!==null?m.e1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e1', this.value)">` : ''}
                                 ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
                             </div>` : ''}
                         </div>
-                        <div class="ko-team-row"><span>${name2}</span>
+                        <div class="ko-team-row ${row2Class}">
+                            <span class="ko-team-name">${name2} ${check2}</span>
                             ${isAdmin ? `<div class="ko-inputs">
                                 <input type="number" class="ko-score" placeholder="90'" value="${m.s2!==null?m.s2:''}" onchange="updateKoScore('${roundKey}', ${index}, 's2', this.value)">
                                 ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e2!==null?m.e2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e2', this.value)">` : ''}
-                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
-                            </div>` : `<span style="font-weight:bold; color:#38bdf8;">${scoreText}</span>`}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p2', this.value)">` : ''}
+                            </div>` : (winnerInfo.winner === 2 ? `<span style="font-weight:bold; color:#4ade80;">${scoreText}</span>` : `<span style="font-weight:bold; color:#38bdf8;">${scoreText}</span>`)}
                         </div>
-                        <div class="match-footer" style="border-top: 1px solid #475569;">
+                        ${!isAdmin && winnerInfo.winner === 1 ? `<div style="text-align:right; font-size:0.8rem; font-weight:bold; color:#4ade80; padding-right:6px; margin-top:-2px;">${scoreText}</div>` : ''}
+                        <div class="match-footer" style="border-top: 1px solid #475569; margin-top:8px;">
                             Πληροφορίες αγώνα: 
                             <a href="${m.link}" target="_blank" class="link-badge link-fifa">FIFA</a> 
                             <a href="${currentOpta}" target="_blank" class="link-badge link-opta">Opta</a>
