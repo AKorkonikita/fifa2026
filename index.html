@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA World Cup 2026 - Tracker</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #0b0f19; color: #f1f5f9; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #38bdf8; margin-bottom: 5px; font-size: 2.2rem; }
+        .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 1rem; }
+        .section-title { color: #f59e0b; border-bottom: 2px solid #1e293b; padding-bottom: 8px; font-size: 1.6rem; margin-top: 40px; }
+        .bracket-outer { overflow-x: auto; background-color: #111827; padding: 20px; border-radius: 12px; border: 2px solid #38bdf8; }
+        .bracket-container { display: flex; gap: 40px; min-width: 1600px; }
+        .bracket-round { display: flex; flex-direction: column; justify-content: space-around; min-width: 260px; }
+        .bracket-round h3 { text-align: center; color: #38bdf8; font-size: 1.1rem; margin-bottom: 15px; border-bottom: 1px solid #1e293b; padding-bottom: 5px; }
+        .ko-match-card, .bracket-group-card { background-color: #1e293b; border: 1px solid #475569; border-radius: 8px; padding: 10px; margin: 8px 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+        .bracket-group-card { border-color: #f59e0b; background-color: #161e2e; }
+        .ko-date, .bg-title { font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px; text-align: center; font-weight: bold; }
+        .bg-title { color: #f59e0b; }
+        .ko-team-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; font-size: 0.9rem; }
+        .ko-team-name { font-weight: 500; max-width: 155px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ko-inputs { display: flex; gap: 4px; }
+        .ko-score { width: 30px; background-color: #0b0f19; color: #fff; border: 1px solid #64748b; text-align: center; border-radius: 4px; padding: 2px; font-size: 0.85rem; }
+        .ko-score.ext { border-color: #a855f7; }
+        .ko-score.pen { border-color: #ec4899; }
+        .pos-badge { font-size: 0.7rem; padding: 1px 5px; border-radius: 3px; margin-right: 5px; font-weight: bold; }
+        .b-p1 { background-color: #22c55e; color: #000; }
+        .b-p2 { background-color: #3b82f6; color: #fff; }
+        .b-p3 { background-color: #eab308; color: #000; }
+        .standings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .group-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
+        .group-card h3 { margin-top: 0; color: #f8fafc; font-size: 1.1rem; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; }
+        th { color: #94a3b8; font-weight: 600; padding: 6px; }
+        td { padding: 6px; color: #cbd5e1; }
+        tr.border-bottom { border-bottom: 1px solid #1e293b; }
+        .row-p1 { border-left: 4px solid #22c55e; background-color: rgba(34, 197, 94, 0.03); }
+        .row-p2 { border-left: 4px solid #3b82f6; background-color: rgba(59, 130, 246, 0.03); }
+        .row-p3 { border-left: 4px solid #eab308; background-color: rgba(234, 179, 8, 0.03); }
+        .best-thirds-box { background-color: #1e1b4b; border: 1px solid #4338ca; border-radius: 8px; padding: 15px; margin-top: 20px; }
+        .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 15px; }
+        .match-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+        .match-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; }
+        .match-body { display: flex; align-items: center; justify-content: space-between; }
+        .team-box { font-size: 0.95rem; font-weight: 500; width: 40%; }
+        .team-box.left { text-align: left; }
+        .team-box.right { text-align: right; }
+        .score-box { display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 1.1rem; }
+        .match-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid #1e293b; font-size: 0.75rem; color: #94a3b8; text-align: center; }
+        .match-footer a { color: #38bdf8; text-decoration: none; font-weight: bold; }
+        .match-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <h1>🏆 FIFA WORLD CUP 2026 TRACKER 🏆</h1>
+    <p class="subtitle">Επίσημο Φορμάτ Διοργάνωσης (Live Σύστημα Ενημέρωσης)</p>
+
+    <h2 class="section-title" style="color:#38bdf8; margin-top:10px;">🌳 Ολοκληρωμένο Δέντρο Διοργάνωσης</h2>
+    <div class="bracket-outer">
+        <div class="bracket-container">
+            <div class="bracket-round" id="group-round-bracket"><h3>Φάση Ομίλων (Top 3)</h3></div>
+            <div class="bracket-round" id="r32-round"><h3>Φάση των 32</h3></div>
+            <div class="bracket-round" id="r16-round"><h3>Φάση των 16</h3></div>
+            <div class="bracket-round" id="qf-round"><h3>Προημιτελικοί</h3></div>
+            <div class="bracket-round" id="sf-round"><h3>Ημιτελικοί</h3></div>
+            <div class="bracket-round" id="f-round"><h3>Μεγάλος Τελικός</h3></div>
+        </div>
+    </div>
+
+    <h2 class="section-title">📊 Πίνακες Κατάταξης (Αναλυτικά)</h2>
+    <div class="best-thirds-box">
+        <h3 style="margin-top:0; color:#eab308;">🏅 Συνολική Κατάταξη Καλύτερων 3ων (Προκρίνονται οι 8 πρώτοι)</h3>
+        <table id="thirds-table">
+            <thead><tr class="border-bottom"><th>#</th><th>Όμιλος</th><th>Ομάδα</th><th>Βαθ.</th><th>Γκολ Υπ.</th></tr></thead>
+            <tbody id="thirds-tbody"></tbody>
+        </table>
+    </div>
+    <br>
+    <div class="standings-grid" id="standings-container"></div>
+
+    <h2 class="section-title">📅 Αγώνες & Αποτελέσματα Ομίλων</h2>
+    <div class="matches-grid" id="group-matches-container"></div>
+
+    <script>
+        const groupTeams = {
+            'A': ['Μεξικό 🇲🇽', 'Νότια Αφρική 🇿🇦', 'Νότια Κορέα 🇰🇷', 'Τσεχία 🇨🇿'],
+            'B': ['Καναδάς 🇨🇦', 'Βοσνία-Ερζεγοβίνη 🇧🇦', 'Κατάρ 🇶🇦', 'Ελβετία 🇨🇭'],
+            'C': ['Βραζιλία 🇧🇷', 'Μαρόκο 🇲🇦', 'Αϊτή 🇭🇹', 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿'],
+            'D': ['ΗΠΑ 🇺🇸', 'Παραγουάη 🇵🇾', 'Αυστραλία 🇦🇺', 'Τουρκία 🇹🇷'],
+            'E': ['Γερμανία 🇩🇪', 'Κουρασάο 🇨🇼', 'Ακτή Ελεφαντοστού 🇨🇮', 'Εκουαδόρ 🇪🇨'],
+            'F': ['Ολλανδία 🇳🇱', 'Σουηδία 🇸🇪', 'Τυνησία 🇹🇳', 'Ιαπωνία 🇯🇵'],
+            'G': ['Βέλγιο 🇧🇪', 'Αίγυπτος 🇪🇬', 'Ιράν 🇮🇷', 'Νέα Ζηλανδία 🇳🇿'],
+            'H': ['Ισπανία 🇪🇸', 'Σαουδική Αραβία 🇸🇦', 'Ουρουγουάη 🇺🇾', 'Πράσινο Ακρωτήριο 🇨🇻'],
+            'I': ['Γαλλία 🇫🇷', 'Σενεγάλη 🇸🇳', 'Νορβηγία 🇳🇴', 'Ιράκ 🇮🇶'],
+            'J': ['Αργεντινή 🇦🇷', 'Αλγερία 🇩🇿', 'Αυστρία 🇦🇹', 'Ιορδανία 🇯🇴'],
+            'K': ['Πορτογαλία 🇵🇹', 'Λαϊκή Δημ. Κονγκό 🇨🇩', 'Ουζμπεκιστάν 🇺🇿', 'Κολομβία 🇨🇴'],
+            'L': ['Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', 'Κροατία 🇭🇷', 'Γκάνα 🇬🇭', 'Παναμάς 🇵🇦']
+        };
+
+        const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
+
+        // 📝 🛠️ ΕΔΩ ΑΛΛΑΖΕΙΣ ΤΑ ΣΚΟΡ ΚΑΙ ΤΑ LINKS ΣΤΟ GITHUB 🛠️ 📝
+        // Αντί για null βάζεις το σκορ (π.χ. s1: 2, s2: 1) και μέσα στα "" βάζεις το link του αγώνα
+        let groupMatches = [
+            { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 3, group: 'B', date: '12 Ιουνίου', time: '22:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 4, group: 'B', date: '13 Ιουνίου', time: '22:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
+            { id: 5, group: 'C', date: '14 Ιουνίου', time: '01:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 6, group: 'C', date: '14 Ιουνίου', time: '04:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 7, group: 'D', date: '13 Ιουνίου', time: '04:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
+            { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
+            { id: 9, group: 'E', date: '14 Ιουνίου', time: '22:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink },
+            { id: 10, group: 'E', date: '15 Ιουνίου', time: '22:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ 🇪🇨', s1: null, s2: null, link: defaultFifaLink },
+            { id: 11, group: 'F', date: '15 Ιουνίου', time: '01:00', t1: 'Ολλανδία 🇳🇱', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink },
+            { id: 12, group: 'F', date: '15 Ιουνίου', time: '04:00', t1: 'Τυνησία 🇹🇳', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink },
+            { id: 13, group: 'G', date: '16 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink },
+            { id: 14, group: 'G', date: '17 Ιουνίου', time: '22:00', t1: 'Ιράν 🇮🇷', t2: 'Νέα Ζηλανδία 🇳🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 15, group: 'H', date: '17 Ιουνίου', time: '01:00', t1: 'Ισπανία 🇪🇸', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 16, group: 'H', date: '17 Ιουνίου', time: '04:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink },
+            { id: 17, group: 'I', date: '18 Ιουνίου', time: '22:00', t1: 'Γαλλία 🇫🇷', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink },
+            { id: 18, group: 'I', date: '19 Ιουνίου', time: '22:00', t1: 'Νορβηγία 🇳🇴', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink },
+            { id: 19, group: 'J', date: '19 Ιουνίου', time: '01:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 20, group: 'J', date: '19 Ιουνίου', time: '04:00', t1: 'Αυστρία 🇦🇹', t2: 'Ιορδανία 🇯🇴', s1: null, s2: null, link: defaultFifaLink },
+            { id: 21, group: 'K', date: '20 Ιουνίου', time: '22:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink },
+            { id: 22, group: 'K', date: '21 Ιουνίου', time: '22:00', t1: 'Ουζμπεκιστάν 🇺🇿', t2: 'Κολομβία 🇨🇴', s1: null, s2: null, link: defaultFifaLink },
+            { id: 23, group: 'L', date: '21 Ιουνίου', time: '01:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink },
+            { id: 24, group: 'L', date: '21 Ιουνίου', time: '04:00', t1: 'Γκάνα 🇬🇭', t2: 'Παναμάς 🇵🇦', s1: null, s2: null, link: defaultFifaLink }
+        ];
+
+        // 📝 ΕΔΩ ΑΛΛΑΖΕΙΣ ΤΑ ΣΚΟΡ ΚΑΙ ΤΑ LINKS ΤΩΝ KNOCKOUT (π.χ. s1: 3, s2: 2, e1: παράταση, p1: πέναλτι αν χρειαστεί)
+        let koMatches = {
+            r32: Array.from({length: 16}, (_, i) => ({ id: `R32-${i+1}`, name: `Αγώνας ${73+i}`, date: '28-3 Ιουλ', label1: 'Προκρινόμενος', label2: 'Προκρινόμενος', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
+            r16: Array.from({length: 8}, (_, i) => ({ id: `R16-${i+1}`, name: `Ματς ${89+i}`, date: '4-7 Ιουλ', label1: `Νικητής ${73+i*2}`, label2: `Νικητής ${74+i*2}`, t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
+            qf: Array.from({length: 4}, (_, i) => ({ id: `QF-${i+1}`, name: `Προημ. ${97+i}`, date: '9-11 Ιουλ', label1: `Νικητής ${89+i*2}`, label2: `Νικητής ${90+i*2}`, t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
+            sf: Array.from({length: 2}, (_, i) => ({ id: `SF-${i+1}`, name: `Ημιτελ. ${101+i}`, date: '14-15 Ιουλ', label1: `Νικητής ${97+i*2}`, label2: `Νικητής ${98+i*2}`, t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
+            f: [{ id: 'F-1', name: 'ΤΕΛΙΚΟΣ', date: '19 Ιουλίου', label1: 'Νικητής 101', label2: 'Νικητής 102', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }]
+        };
+
+        function init() {
+            renderGroupMatches();
+            calculateTournament();
+        }
+
+        function renderGroupMatches() {
+            const container = document.getElementById('group-matches-container');
+            container.innerHTML = '';
+            groupMatches.forEach(m => {
+                let displayScore = (m.s1 !== null && m.s2 !== null) ? `${m.s1} - ${m.s2}` : "vs";
+                container.innerHTML += `
+                    <div class="match-card">
+                        <div class="match-header"><span>Όμιλος ${m.group}</span><span>📅 ${m.date} - 🕒 ${m.time}</span></div>
+                        <div class="match-body">
+                            <div class="team-box left">${m.t1}</div>
+                            <div class="score-box">${displayScore}</div>
+                            <div class="team-box right">${m.t2}</div>
+                        </div>
+                        <div class="match-footer">
+                            Περισσότερες πληροφορίες για τον αγώνα <a href="${m.link}" target="_blank">ΕΔΩ</a>.
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function calculateTournament() {
+            let standings = {};
+            Object.keys(groupTeams).forEach(g => {
+                standings[g] = groupTeams[g].map(t => ({ name: t, group: g, pts: 0, gf: 0, ga: 0, gd: 0, gamesPlayed: 0 }));
+            });
+
+            let hasMatchesPlayed = false;
+            groupMatches.forEach(m => {
+                if(m.s1 !== null && m.s2 !== null) {
+                    hasMatchesPlayed = true;
+                    let team1 = standings[m.group].find(t => t.name === m.t1);
+                    let team2 = standings[m.group].find(t => t.name === m.t2);
+                    team1.gamesPlayed++; team2.gamesPlayed++;
+                    team1.gf += m.s1; team1.ga += m.s2; team2.gf += m.s2; team2.ga += m.s1;
+                    if(m.s1 > m.s2) team1.pts += 3; else if(m.s1 < m.s2) team2.pts += 3; else { team1.pts += 1; team2.pts += 1; }
+                    team1.gd = team1.gf - team1.ga; team2.gd = team2.gf - team2.ga;
+                }
+            });
+
+            Object.keys(standings).forEach(g => { standings[g].sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf); });
+            let thirdPlacedTeams = Object.keys(standings).map(g => standings[g][2]);
+            thirdPlacedTeams.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+
+            renderStandings(standings, thirdPlacedTeams);
+            renderGroupStageInBracket(standings);
+            fillRoundOf32(standings, thirdPlacedTeams, hasMatchesPlayed);
+        }
+
+        function renderGroupStageInBracket(standings) {
+            const div = document.getElementById('group-round-bracket');
+            div.innerHTML = '<h3>Φάση Ομίλων (Top 3)</h3>';
+            Object.keys(standings).forEach(g => {
+                let groupPlayed = groupMatches.filter(m => m.group === g && m.s1 !== null && m.s2 !== null).length;
+                let t1Name = groupPlayed > 0 ? standings[g][0].name : `1ος Ομίλου ${g}`;
+                let t2Name = groupPlayed > 0 ? standings[g][1].name : `2ος Ομίλου ${g}`;
+                let t3Name = groupPlayed > 0 ? standings[g][2].name : `3ος Ομίλου ${g}`;
+                let styleItalic = groupPlayed > 0 ? '' : 'color:#64748b; font-style:italic;';
+                div.innerHTML += `
+                    <div class="bracket-group-card">
+                        <div class="bg-title">Όμιλος ${g}</div>
+                        <div class="ko-team-row"><span class="ko-team-name" style="${styleItalic}"><span class="pos-badge b-p1">1</span>${t1Name}</span></div>
+                        <div class="ko-team-row"><span class="ko-team-name" style="${styleItalic}"><span class="pos-badge b-p2">2</span>${t2Name}</span></div>
+                        <div class="ko-team-row"><span class="ko-team-name" style="${styleItalic}"><span class="pos-badge b-p3">3</span>${t3Name}</span></div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderStandings(standings, thirdPlaced) {
+            const container = document.getElementById('standings-container'); container.innerHTML = '';
+            Object.keys(standings).forEach(g => {
+                let groupPlayed = groupMatches.filter(m => m.group === g && m.s1 !== null && m.s2 !== null).length;
+                let html = `<div class="group-card"><h3>Όμιλος ${g}</h3><table><thead><tr class="border-bottom"><th>#</th><th style="text-align:left;">Ομάδα</th><th>Β</th><th>Γκ</th></tr></thead><tbody>`;
+                standings[g].forEach((t, i) => {
+                    let rowClass = i===0 ? 'row-p1' : (i===1 ? 'row-p2' : (i===2 ? 'row-p3' : ''));
+                    let displayName = groupPlayed > 0 ? t.name : `-${i+1}ος-`;
+                    html += `<tr class="${rowClass}"><td><b>${i+1}</b></td><td style="text-align:left; ${groupPlayed > 0 ? '' : 'color:#64748b; font-style:italic;'}">${displayName}</td><td><b>${groupPlayed > 0 ? t.pts : 0}</b></td><td>${groupPlayed > 0 ? t.gf+':'+t.ga : '0:0'}</td></tr>`;
+                });
+                container.innerHTML += html + '</tbody></table></div>';
+            });
+            const thirdsTbody = document.getElementById('thirds-tbody'); thirdsTbody.innerHTML = '';
+            let totalPlayed = groupMatches.filter(m => m.s1 !== null && m.s2 !== null).length;
+            thirdPlaced.forEach((t, i) => {
+                let isQualified = (i < 8 && totalPlayed > 0) ? 'style="background-color: rgba(34,197,94,0.15); font-weight:bold;"' : '';
+                thirdsTbody.innerHTML += `<tr class="border-bottom" ${isQualified}><td>${i+1}</td><td>${totalPlayed > 0 ? 'Όμ. '+t.group : '-'}</td><td style="${totalPlayed > 0 ? '' : 'color:#64748b; font-style:italic;'}">${totalPlayed > 0 ? t.name : 'Αναμένεται...'}</td><td><b>${totalPlayed > 0 ? t.pts : 0}</b></td><td>${totalPlayed > 0 ? t.gf : 0}</td></tr>`;
+            });
+        }
+
+        function fillRoundOf32(standings, thirdPlaced, hasMatchesPlayed) {
+            if (hasMatchesPlayed) {
+                koMatches.r32[0].t1 = standings['A'][0].name; koMatches.r32[0].t2 = standings['C'][1].name;
+                koMatches.r32[1].t1 = standings['A'][1].name; koMatches.r32[1].t2 = standings['B'][1].name;
+                koMatches.r32[2].t1 = standings['B'][0].name; koMatches.r32[2].t2 = thirdPlaced[0] ? thirdPlaced[0].name : '3ος Καλύτερος';
+                koMatches.r32[3].t1 = standings['C'][0].name; koMatches.r32[3].t2 = standings['F'][1].name;
+                koMatches.r32[4].t1 = standings['F'][0].name; koMatches.r32[4].t2 = standings['C'][1].name;
+                koMatches.r32[5].t1 = standings['E'][1].name; koMatches.r32[5].t2 = standings['I'][1].name;
+                koMatches.r32[6].t1 = standings['D'][0].name; koMatches.r32[6].t2 = thirdPlaced[1] ? thirdPlaced[1].name : '3ος Καλύτερος';
+                koMatches.r32[7].t1 = standings['E'][0].name; koMatches.r32[7].t2 = thirdPlaced[2] ? thirdPlaced[2].name : '3ος Καλύτερος';
+                koMatches.r32[8].t1 = standings['H'][0].name; koMatches.r32[8].t2 = standings['J'][1].name;
+                koMatches.r32[9].t1 = standings['K'][1].name; koMatches.r32[9].t2 = standings['L'][1].name;
+                koMatches.r32[10].t1 = standings['G'][0].name; koMatches.r32[10].t2 = thirdPlaced[3] ? thirdPlaced[3].name : '3ος Καλύτερος';
+                koMatches.r32[11].t1 = standings['D'][1].name; koMatches.r32[11].t2 = standings['G'][1].name;
+                koMatches.r32[12].t1 = standings['J'][0].name; koMatches.r32[12].t2 = standings['H'][1].name;
+                koMatches.r32[13].t1 = standings['K'][0].name; koMatches.r32[13].t2 = thirdPlaced[4] ? thirdPlaced[4].name : '3ος Καλύτερος';
+                koMatches.r32[14].t1 = standings['I'][0].name; koMatches.r32[14].t2 = thirdPlaced[5] ? thirdPlaced[5].name : '3ος Καλύτερος';
+                koMatches.r32[15].t1 = standings['L'][0].name; koMatches.r32[15].t2 = thirdPlaced[6] ? thirdPlaced[6].name : '3ος Καλύτερος';
+            }
+            updateAllKnockoutRounds();
+        }
+
+        function getWinner(m) {
+            if (m.s1 === null || m.s2 === null) return "";
+            if (m.s1 > m.s2) return m.t1 || m.label1; if (m.s2 > m.s1) return m.t2 || m.label2;
+            if (m.e1 !== null && m.e2 !== null) {
+                if (m.e1 > m.e2) return m.t1 || m.label1; if (m.e2 > m.e1) return m.t2 || m.label2;
+                if (m.p1 !== null && m.p2 !== null) { if (m.p1 > m.p2) return m.t1 || m.label1; return m.t2 || m.label2; }
+            }
+            return "";
+        }
+
+        function updateAllKnockoutRounds() {
+            for(let i=0; i<8; i++) { koMatches.r16[i].t1 = getWinner(koMatches.r32[i*2]) || ""; koMatches.r16[i].t2 = getWinner(koMatches.r32[i*2+1]) || ""; }
+            for(let i=0; i<4; i++) { koMatches.qf[i].t1 = getWinner(koMatches.r16[i*2]) || ""; koMatches.qf[i].t2 = getWinner(koMatches.r16[i*2+1]) || ""; }
+            for(let i=0; i<2; i++) { koMatches.sf[i].t1 = getWinner(koMatches.qf[i*2]) || ""; koMatches.sf[i].t2 = getWinner(koMatches.qf[i*2+1]) || ""; }
+            koMatches.f[0].t1 = getWinner(koMatches.sf[0]) || ""; koMatches.f[0].t2 = getWinner(koMatches.sf[1]) || "";
+            renderBracketHTML();
+        }
+
+        function renderBracketHTML() {
+            renderRoundContainer('r32-round', koMatches.r32); renderRoundContainer('r16-round', koMatches.r16);
+            renderRoundContainer('qf-round', koMatches.qf); renderRoundContainer('sf-round', koMatches.sf);
+            renderRoundContainer('f-round', koMatches.f);
+        }
+
+        function renderRoundContainer(elementId, matchesList) {
+            const div = document.getElementById(elementId);
+            div.innerHTML = `<h3>${div.querySelector('h3').innerText}</h3>`;
+            matchesList.forEach((m) => {
+                let name1 = m.t1 ? m.t1 : m.label1; let name2 = m.t2 ? m.t2 : m.label2;
+                let scoreText = (m.s1 !== null && m.s2 !== null) ? `${m.s1} - ${m.s2}` : "";
+                if (m.s1 !== null && m.s1 === m.s2) {
+                    if (m.e1 !== null) scoreText += ` (παρ. ${m.e1}-${m.e2})`;
+                    if (m.p1 !== null) scoreText += ` (πέν. ${m.p1}-${m.p2})`;
+                }
+                div.innerHTML += `
+                    <div class="ko-match-card">
+                        <div class="ko-date">${m.name} | 📅 ${m.date}</div>
+                        <div class="ko-team-row" style="${m.t1 ? '' : 'color:#64748b; font-style:italic;'}"><span>${name1}</span></div>
+                        <div class="ko-team-row" style="${m.t2 ? '' : 'color:#64748b; font-style:italic;'}"><span>${name2}</span><span style="font-weight:bold; color:#38bdf8;">${scoreText}</span></div>
+                        <div class="match-footer" style="border-top: 1px solid #475569;"><a href="${m.link}" target="_blank">Περισσότερες πληροφορίες ΕΔΩ</a></div>
+                    </div>`;
+            });
+        }
+        window.onload = init;
+    </script>
+</body>
+</html>
