@@ -45,16 +45,29 @@
         .team-box { font-size: 0.95rem; font-weight: 500; width: 40%; }
         .team-box.left { text-align: left; }
         .team-box.right { text-align: right; }
-        .score-box { display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 1.1rem; }
+        .score-box { display: flex; align-items: center; gap: 6px; }
         .match-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid #1e293b; font-size: 0.75rem; color: #94a3b8; text-align: center; }
         .match-footer a { color: #38bdf8; text-decoration: none; font-weight: bold; }
         .match-footer a:hover { text-decoration: underline; }
+        .admin-link-input { width: 100%; background-color: #0b0f19; color: #38bdf8; border: 1px solid #475569; border-radius: 4px; padding: 4px; font-size: 0.75rem; margin-top: 6px; }
+        .admin-panel { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .save-btn { background-color: #22c55e; color: white; border: none; padding: 12px 24px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(34,197,94,0.3); }
+        .save-btn:hover { background-color: #16a34a; }
+        .mode-bar { background-color: #1e293b; border: 1px solid #38bdf8; padding: 10px; text-align: center; border-radius: 6px; margin-bottom: 20px; font-size: 0.95rem; font-weight: bold; }
+        .mode-admin { border-color: #ef4444; color: #f87171; }
+        .mode-viewer { border-color: #22c55e; color: #4ade80; }
     </style>
 </head>
 <body>
 
     <h1>🏆 FIFA WORLD CUP 2026 TRACKER 🏆</h1>
-    <p class="subtitle">Επίσημο Φορμάτ Διοργάνωσης (Live Σύστημα Ενημέρωσης)</p>
+    <p class="subtitle">Live Διαχείριση Σκόρ & Διαφορετικών Links</p>
+
+    <div id="mode-status" class="mode-bar">🔄 Σύνδεση με τη βάση δεδομένων...</div>
+
+    <div id="admin-controls" class="admin-panel" style="display: none;">
+        <button class="save-btn" onclick="saveCloudData()">☁️ Αποθήκευση Αλλαγών στο Cloud (Live)</button>
+    </div>
 
     <h2 class="section-title" style="color:#38bdf8; margin-top:10px;">🌳 Ολοκληρωμένο Δέντρο Διοργάνωσης</h2>
     <div class="bracket-outer">
@@ -70,7 +83,7 @@
 
     <h2 class="section-title">📊 Πίνακες Κατάταξης (Αναλυτικά)</h2>
     <div class="best-thirds-box">
-        <h3 style="margin-top:0; color:#eab308;">🏅 Συνολική Κατάταξη Καλύτερων 3ων (Προκρίνονται οι 8 πρώτοι)</h3>
+        <h3 style="margin-top:0; color:#eab308;">🏅 Συνολική Κατάταξη Καλύτερων 3ων</h3>
         <table id="thirds-table">
             <thead><tr class="border-bottom"><th>#</th><th>Όμιλος</th><th>Ομάδα</th><th>Βαθ.</th><th>Γκολ Υπ.</th></tr></thead>
             <tbody id="thirds-tbody"></tbody>
@@ -83,6 +96,13 @@
     <div class="matches-grid" id="group-matches-container"></div>
 
     <script>
+        // 💾 ΕΔΩ ΜΠΗΚΑΝ ΤΑ ΔΙΚΑ ΣΟΥ ΚΛΕΙΔΙΑ ΑΠΟ ΤΟ JSONBIN.IO
+        const BIN_ID = "6a16b0da8ef04f45382079d4";
+        const API_KEY = "$2a$10$NqQvfYdGjV71PL.X24YwgusVKAOFrBdT3YUnphmvO3EofH6WD13te";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isAdmin = urlParams.get('mode') === 'admin';
+
         const groupTeams = {
             'A': ['Μεξικό 🇲🇽', 'Νότια Αφρική 🇿🇦', 'Νότια Κορέα 🇰🇷', 'Τσεχία 🇨🇿'],
             'B': ['Καναδάς 🇨🇦', 'Βοσνία-Ερζεγοβίνη 🇧🇦', 'Κατάρ 🇶🇦', 'Ελβετία 🇨🇭'],
@@ -100,36 +120,18 @@
 
         const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
 
-        // 📝 🛠️ ΕΔΩ ΑΛΛΑΖΕΙΣ ΤΑ ΣΚΟΡ ΚΑΙ ΤΑ LINKS ΣΤΟ GITHUB 🛠️ 📝
-        // Αντί για null βάζεις το σκορ (π.χ. s1: 2, s2: 1) και μέσα στα "" βάζεις το link του αγώνα
         let groupMatches = [
-            { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 3, group: 'B', date: '12 Ιουνίου', time: '22:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 4, group: 'B', date: '13 Ιουνίου', time: '22:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
-            { id: 5, group: 'C', date: '14 Ιουνίου', time: '01:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 6, group: 'C', date: '14 Ιουνίου', time: '04:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 7, group: 'D', date: '13 Ιουνίου', time: '04:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
-            { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 9, group: 'E', date: '14 Ιουνίου', time: '22:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink },
-            { id: 10, group: 'E', date: '15 Ιουνίου', time: '22:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ 🇪🇨', s1: null, s2: null, link: defaultFifaLink },
-            { id: 11, group: 'F', date: '15 Ιουνίου', time: '01:00', t1: 'Ολλανδία 🇳🇱', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink },
-            { id: 12, group: 'F', date: '15 Ιουνίου', time: '04:00', t1: 'Τυνησία 🇹🇳', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink },
-            { id: 13, group: 'G', date: '16 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink },
-            { id: 14, group: 'G', date: '17 Ιουνίου', time: '22:00', t1: 'Ιράν 🇮🇷', t2: 'Νέα Ζηλανδία 🇳🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 15, group: 'H', date: '17 Ιουνίου', time: '01:00', t1: 'Ισπανία 🇪🇸', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 16, group: 'H', date: '17 Ιουνίου', time: '04:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink },
-            { id: 17, group: 'I', date: '18 Ιουνίου', time: '22:00', t1: 'Γαλλία 🇫🇷', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink },
-            { id: 18, group: 'I', date: '19 Ιουνίου', time: '22:00', t1: 'Νορβηγία 🇳🇴', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink },
-            { id: 19, group: 'J', date: '19 Ιουνίου', time: '01:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 20, group: 'J', date: '19 Ιουνίου', time: '04:00', t1: 'Αυστρία 🇦🇹', t2: 'Ιορδανία 🇯🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 21, group: 'K', date: '20 Ιουνίου', time: '22:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink },
-            { id: 22, group: 'K', date: '21 Ιουνίου', time: '22:00', t1: 'Ουζμπεκιστάν 🇺🇿', t2: 'Κολομβία 🇨🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 23, group: 'L', date: '21 Ιουνίου', time: '01:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 24, group: 'L', date: '21 Ιουνίου', time: '04:00', t1: 'Γκάνα 🇬🇭', t2: 'Παναμάς 🇵🇦', s1: null, s2: null, link: defaultFifaLink }
+            { id: 1, group: 'A', date: '11 Ιουνίου', time: '18:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 2, group: 'A', date: '12 Ιουνίου', time: '21:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 3, group: 'B', date: '12 Ιουνίου', time: '21:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 4, group: 'B', date: '12 Ιουνίου', time: '21:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
+            { id: 5, group: 'C', date: '11 Ιουνίου', time: '18:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 6, group: 'C', date: '12 Ιουνίου', time: '21:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 7, group: 'D', date: '11 Ιουνίου', time: '18:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
+            { id: 8, group: 'D', date: '12 Ιουνίου', time: '21:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
+            { id: 9, group: 'E', date: '12 Ιουνίου', time: '21:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink }
         ];
 
-        // 📝 ΕΔΩ ΑΛΛΑΖΕΙΣ ΤΑ ΣΚΟΡ ΚΑΙ ΤΑ LINKS ΤΩΝ KNOCKOUT (π.χ. s1: 3, s2: 2, e1: παράταση, p1: πέναλτι αν χρειαστεί)
         let koMatches = {
             r32: Array.from({length: 16}, (_, i) => ({ id: `R32-${i+1}`, name: `Αγώνας ${73+i}`, date: '28-3 Ιουλ', label1: 'Προκρινόμενος', label2: 'Προκρινόμενος', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
             r16: Array.from({length: 8}, (_, i) => ({ id: `R16-${i+1}`, name: `Ματς ${89+i}`, date: '4-7 Ιουλ', label1: `Νικητής ${73+i*2}`, label2: `Νικητής ${74+i*2}`, t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
@@ -138,30 +140,83 @@
             f: [{ id: 'F-1', name: 'ΤΕΛΙΚΟΣ', date: '19 Ιουλίου', label1: 'Νικητής 101', label2: 'Νικητής 102', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }]
         };
 
-        function init() {
+        function setupUI() {
+            const bar = document.getElementById('mode-status');
+            if (isAdmin) {
+                bar.innerText = "🔴 Λειτουργία Διαχειριστή (Καταχώρησε σκορ & links απευθείας)";
+                bar.className = "mode-bar mode-admin";
+                document.getElementById('admin-controls').style.display = 'flex';
+            } else {
+                bar.innerText = "🟢 Λειτουργία Προβολής (Live ενημέρωση)";
+                bar.className = "mode-bar mode-viewer";
+            }
+        }
+
+        async function loadCloudData() {
+            try {
+                let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { "X-Master-Key": API_KEY }
+                });
+                let json = await res.json();
+                if(json.record && json.record.groupMatches) {
+                    groupMatches = json.record.groupMatches;
+                    koMatches = json.record.koMatches;
+                }
+            } catch (e) { console.error(e); }
             renderGroupMatches();
             calculateTournament();
+        }
+
+        async function saveCloudData() {
+            if (!isAdmin) return;
+            document.getElementById('admin-controls').style.opacity = '0.5';
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+                    body: JSON.stringify({ groupMatches, koMatches })
+                });
+                alert("✅ Οι αλλαγές αποθηκεύτηκαν στο Cloud και έγιναν Live!");
+            } catch (e) { alert("❌ Σφάλμα αποθήκευσης."); }
+            document.getElementById('admin-controls').style.opacity = '1';
         }
 
         function renderGroupMatches() {
             const container = document.getElementById('group-matches-container');
             container.innerHTML = '';
             groupMatches.forEach(m => {
-                let displayScore = (m.s1 !== null && m.s2 !== null) ? `${m.s1} - ${m.s2}` : "vs";
+                let disabledAttr = isAdmin ? '' : 'disabled';
                 container.innerHTML += `
                     <div class="match-card">
                         <div class="match-header"><span>Όμιλος ${m.group}</span><span>📅 ${m.date} - 🕒 ${m.time}</span></div>
                         <div class="match-body">
                             <div class="team-box left">${m.t1}</div>
-                            <div class="score-box">${displayScore}</div>
+                            <div class="score-box">
+                                <input type="number" class="ko-score" min="0" value="${m.s1!==null?m.s1:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 1, this.value)">
+                                <span>-</span>
+                                <input type="number" class="ko-score" min="0" value="${m.s2!==null?m.s2:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 2, this.value)">
+                            </div>
                             <div class="team-box right">${m.t2}</div>
                         </div>
                         <div class="match-footer">
                             Περισσότερες πληροφορίες για τον αγώνα <a href="${m.link}" target="_blank">ΕΔΩ</a>.
+                            ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Βάλε διαφορετικό Link για αυτό το ματς..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateGroupLink(${m.id}, this.value)">` : ''}
                         </div>
                     </div>
                 `;
             });
+        }
+
+        function updateGroupScore(id, teamNum, val) {
+            let m = groupMatches.find(x => x.id === id);
+            let scoreVal = val === '' ? null : parseInt(val);
+            if(teamNum === 1) m.s1 = scoreVal; else m.s2 = scoreVal;
+            calculateTournament();
+        }
+
+        function updateGroupLink(id, val) {
+            let m = groupMatches.find(x => x.id === id);
+            m.link = val.trim() === '' ? defaultFifaLink : val.trim();
         }
 
         function calculateTournament() {
@@ -169,20 +224,20 @@
             Object.keys(groupTeams).forEach(g => {
                 standings[g] = groupTeams[g].map(t => ({ name: t, group: g, pts: 0, gf: 0, ga: 0, gd: 0, gamesPlayed: 0 }));
             });
-
             let hasMatchesPlayed = false;
             groupMatches.forEach(m => {
                 if(m.s1 !== null && m.s2 !== null) {
                     hasMatchesPlayed = true;
                     let team1 = standings[m.group].find(t => t.name === m.t1);
                     let team2 = standings[m.group].find(t => t.name === m.t2);
-                    team1.gamesPlayed++; team2.gamesPlayed++;
-                    team1.gf += m.s1; team1.ga += m.s2; team2.gf += m.s2; team2.ga += m.s1;
-                    if(m.s1 > m.s2) team1.pts += 3; else if(m.s1 < m.s2) team2.pts += 3; else { team1.pts += 1; team2.pts += 1; }
-                    team1.gd = team1.gf - team1.ga; team2.gd = team2.gf - team2.ga;
+                    if (team1 && team2) {
+                        team1.gamesPlayed++; team2.gamesPlayed++;
+                        team1.gf += m.s1; team1.ga += m.s2; team2.gf += m.s2; team2.ga += m.s1;
+                        if(m.s1 > m.s2) team1.pts += 3; else if(m.s1 < m.s2) team2.pts += 3; else { team1.pts += 1; team2.pts += 1; }
+                        team1.gd = team1.gf - team1.ga; team2.gd = team2.gf - team2.ga;
+                    }
                 }
             });
-
             Object.keys(standings).forEach(g => { standings[g].sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf); });
             let thirdPlacedTeams = Object.keys(standings).map(g => standings[g][2]);
             thirdPlacedTeams.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
@@ -207,8 +262,7 @@
                         <div class="ko-team-row"><span class="ko-team-name" style="${styleItalic}"><span class="pos-badge b-p1">1</span>${t1Name}</span></div>
                         <div class="ko-team-row"><span class="ko-team-name" style="${styleItalic}"><span class="pos-badge b-p2">2</span>${t2Name}</span></div>
                         <div class="ko-team-row"><span class="ko-team-name" style="${styleItalic}"><span class="pos-badge b-p3">3</span>${t3Name}</span></div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
@@ -273,31 +327,59 @@
         }
 
         function renderBracketHTML() {
-            renderRoundContainer('r32-round', koMatches.r32); renderRoundContainer('r16-round', koMatches.r16);
-            renderRoundContainer('qf-round', koMatches.qf); renderRoundContainer('sf-round', koMatches.sf);
-            renderRoundContainer('f-round', koMatches.f);
+            renderRoundContainer('r32-round', koMatches.r32, 'r32'); renderRoundContainer('r16-round', koMatches.r16, 'r16');
+            renderRoundContainer('qf-round', koMatches.qf, 'qf'); renderRoundContainer('sf-round', koMatches.sf, 'sf');
+            renderRoundContainer('f-round', koMatches.f, 'f');
         }
 
-        function renderRoundContainer(elementId, matchesList) {
+        function renderRoundContainer(elementId, matchesList, roundKey) {
             const div = document.getElementById(elementId);
             div.innerHTML = `<h3>${div.querySelector('h3').innerText}</h3>`;
-            matchesList.forEach((m) => {
+            matchesList.forEach((m, index) => {
+                let showExtAndPen = (m.s1 !== null && m.s2 !== null && m.s1 === m.s2);
                 let name1 = m.t1 ? m.t1 : m.label1; let name2 = m.t2 ? m.t2 : m.label2;
+                let disabledAttr = isAdmin ? '' : 'disabled';
                 let scoreText = (m.s1 !== null && m.s2 !== null) ? `${m.s1} - ${m.s2}` : "";
-                if (m.s1 !== null && m.s1 === m.s2) {
-                    if (m.e1 !== null) scoreText += ` (παρ. ${m.e1}-${m.e2})`;
-                    if (m.p1 !== null) scoreText += ` (πέν. ${m.p1}-${m.p2})`;
-                }
+                if (showExtAndPen && m.e1 !== null) scoreText += ` (παρ. ${m.e1}-${m.e2})`;
+                if (showExtAndPen && m.p1 !== null) scoreText += ` (πέν. ${m.p1}-${m.p2})`;
+
                 div.innerHTML += `
                     <div class="ko-match-card">
                         <div class="ko-date">${m.name} | 📅 ${m.date}</div>
-                        <div class="ko-team-row" style="${m.t1 ? '' : 'color:#64748b; font-style:italic;'}"><span>${name1}</span></div>
-                        <div class="ko-team-row" style="${m.t2 ? '' : 'color:#64748b; font-style:italic;'}"><span>${name2}</span><span style="font-weight:bold; color:#38bdf8;">${scoreText}</span></div>
-                        <div class="match-footer" style="border-top: 1px solid #475569;"><a href="${m.link}" target="_blank">Περισσότερες πληροφορίες ΕΔΩ</a></div>
+                        <div class="ko-team-row"><span>${name1}</span>
+                            ${isAdmin ? `<div class="ko-inputs">
+                                <input type="number" class="ko-score" placeholder="90'" value="${m.s1!==null?m.s1:''}" onchange="updateKoScore('${roundKey}', ${index}, 's1', this.value)">
+                                ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e1!==null?m.e1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e1', this.value)">` : ''}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
+                            </div>` : ''}
+                        </div>
+                        <div class="ko-team-row"><span>${name2}</span>
+                            ${isAdmin ? `<div class="ko-inputs">
+                                <input type="number" class="ko-score" placeholder="90'" value="${m.s2!==null?m.s2:''}" onchange="updateKoScore('${roundKey}', ${index}, 's2', this.value)">
+                                ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e2!==null?m.e2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e2', this.value)">` : ''}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
+                            </div>` : `<span style="font-weight:bold; color:#38bdf8;">${scoreText}</span>`}
+                        </div>
+                        <div class="match-footer" style="border-top: 1px solid #475569;">
+                            <a href="${m.link}" target="_blank">Περισσότερες πληροφορίες ΕΔΩ</a>
+                            ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Link αγώνα..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateKoLink('${roundKey}', ${index}, this.value)">` : ''}
+                        </div>
                     </div>`;
             });
         }
-        window.onload = init;
+
+        function updateKoScore(roundKey, index, field, val) {
+            let scoreVal = val === '' ? null : parseInt(val);
+            koMatches[roundKey][index][field] = scoreVal;
+            updateAllKnockoutRounds();
+        }
+
+        function updateKoLink(roundKey, index, val) {
+            koMatches[roundKey][index].link = val.trim() === '' ? defaultFifaLink : val.trim();
+        }
+
+        if (!isAdmin) { setInterval(loadCloudData, 20000); }
+        setupUI(); loadCloudData();
     </script>
 </body>
 </html>
