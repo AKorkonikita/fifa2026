@@ -96,7 +96,6 @@
     <div class="matches-grid" id="group-matches-container"></div>
 
     <script>
-        // 💾 ΕΔΩ ΜΠΗΚΑΝ ΤΑ ΔΙΚΑ ΣΟΥ ΚΛΕΙΔΙΑ ΑΠΟ ΤΟ JSONBIN.IO
         const BIN_ID = "6a16b0da8ef04f45382079d4";
         const API_KEY = "$2a$10$NqQvfYdGjV71PL.X24YwgusVKAOFrBdT3YUnphmvO3EofH6WD13te";
 
@@ -106,7 +105,7 @@
         const groupTeams = {
             'A': ['Μεξικό 🇲🇽', 'Νότια Αφρική 🇿🇦', 'Νότια Κορέα 🇰🇷', 'Τσεχία 🇨🇿'],
             'B': ['Καναδάς 🇨🇦', 'Βοσνία-Ερζεγοβίνη 🇧🇦', 'Κατάρ 🇶🇦', 'Ελβετία 🇨🇭'],
-            'C': ['Βραζιλία 🇧🇷', 'Μαρόκο 🇲🇦', 'Αϊτή 🇭🇹', 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿'],
+            'C': ['Βραζιλία 🇧🇷', 'Μαρόκο 🇲🇦', 'Αϊτή 🇭🇹', 'Σκωτία 🏴󠁧󠁢󠁳󠁣󠁴󠁿'],
             'D': ['ΗΠΑ 🇺🇸', 'Παραγουάη 🇵🇾', 'Αυστραλία 🇦🇺', 'Τουρκία 🇹🇷'],
             'E': ['Γερμανία 🇩🇪', 'Κουρασάο 🇨🇼', 'Ακτή Ελεφαντοστού 🇨🇮', 'Εκουαδόρ 🇪🇨'],
             'F': ['Ολλανδία 🇳🇱', 'Σουηδία 🇸🇪', 'Τυνησία 🇹🇳', 'Ιαπωνία 🇯🇵'],
@@ -115,21 +114,37 @@
             'I': ['Γαλλία 🇫🇷', 'Σενεγάλη 🇸🇳', 'Νορβηγία 🇳🇴', 'Ιράκ 🇮🇶'],
             'J': ['Αργεντινή 🇦🇷', 'Αλγερία 🇩🇿', 'Αυστρία 🇦🇹', 'Ιορδανία 🇯🇴'],
             'K': ['Πορτογαλία 🇵🇹', 'Λαϊκή Δημ. Κονγκό 🇨🇩', 'Ουζμπεκιστάν 🇺🇿', 'Κολομβία 🇨🇴'],
-            'L': ['Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', 'Κροατία 🇭🇷', 'Γκάνα 🇬🇭', 'Παναμάς 🇵🇦']
+            'L': ['Αγγλία 🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Κροατία 🇭🇷', 'Γκάνα 🇬🇭', 'Παναμάς 🇵🇦']
         };
 
         const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
 
+        // Πλήρης λίστα και των 24 επίσημων αγώνων της 1ης αγωνιστικής
         let groupMatches = [
-            { id: 1, group: 'A', date: '11 Ιουνίου', time: '18:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 2, group: 'A', date: '12 Ιουνίου', time: '21:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 3, group: 'B', date: '12 Ιουνίου', time: '21:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 4, group: 'B', date: '12 Ιουνίου', time: '21:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
-            { id: 5, group: 'C', date: '11 Ιουνίου', time: '18:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 6, group: 'C', date: '12 Ιουνίου', time: '21:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 7, group: 'D', date: '11 Ιουνίου', time: '18:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
-            { id: 8, group: 'D', date: '12 Ιουνίου', time: '21:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 9, group: 'E', date: '12 Ιουνίου', time: '21:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink }
+            { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 3, group: 'B', date: '12 Ιουνίου', time: '22:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 4, group: 'B', date: '13 Ιουνίου', time: '22:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
+            { id: 5, group: 'C', date: '14 Ιουνίου', time: '01:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 6, group: 'C', date: '14 Ιουνίου', time: '04:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴󠁧󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 7, group: 'D', date: '13 Ιουνίου', time: '04:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
+            { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
+            { id: 9, group: 'E', date: '14 Ιουνίου', time: '22:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink },
+            { id: 10, group: 'E', date: '15 Ιουνίου', time: '22:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ 🇪🇨', s1: null, s2: null, link: defaultFifaLink },
+            { id: 11, group: 'F', date: '15 Ιουνίου', time: '01:00', t1: 'Ολλανδία 🇳🇱', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink },
+            { id: 12, group: 'F', date: '15 Ιουνίου', time: '04:00', t1: 'Τυνησία 🇹🇳', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink },
+            { id: 13, group: 'G', date: '16 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink },
+            { id: 14, group: 'G', date: '17 Ιουνίου', time: '22:00', t1: 'Ιράν 🇮🇷', t2: 'Νέα Ζηλανδία 🇳🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 15, group: 'H', date: '17 Ιουνίου', time: '01:00', t1: 'Ισπανία 🇪🇸', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 16, group: 'H', date: '17 Ιουνίου', time: '04:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink },
+            { id: 17, group: 'I', date: '18 Ιουνίου', time: '22:00', t1: 'Γαλλία 🇫🇷', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink },
+            { id: 18, group: 'I', date: '19 Ιουνίου', time: '22:00', t1: 'Νορβηγία 🇳🇴', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink },
+            { id: 19, group: 'J', date: '19 Ιουνίου', time: '01:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 20, group: 'J', date: '19 Ιουνίου', time: '04:00', t1: 'Αυστρία 🇦🇹', t2: 'Ιορδανία 🇯🇴', s1: null, s2: null, link: defaultFifaLink },
+            { id: 21, group: 'K', date: '20 Ιουνίου', time: '22:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink },
+            { id: 22, group: 'K', date: '21 Ιουνίου', time: '22:00', t1: 'Ουζμπεκιστάν 🇺🇿', t2: 'Κολομβία 🇨🇴', s1: null, s2: null, link: defaultFifaLink },
+            { id: 23, group: 'L', date: '21 Ιουνίου', time: '01:00', t1: 'Αγγλία 🏴󠁧󠁢󠁥󠁮󠁧󠁿', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink },
+            { id: 24, group: 'L', date: '21 Ιουνίου', time: '04:00', t1: 'Γκάνα 🇬🇭', t2: 'Παναμάς 🇵🇦', s1: null, s2: null, link: defaultFifaLink }
         ];
 
         let koMatches = {
@@ -158,7 +173,7 @@
                     headers: { "X-Master-Key": API_KEY }
                 });
                 let json = await res.json();
-                if(json.record && json.record.groupMatches) {
+                if(json.record && json.record.groupMatches && json.record.groupMatches.length > 0) {
                     groupMatches = json.record.groupMatches;
                     koMatches = json.record.koMatches;
                 }
@@ -192,9 +207,9 @@
                         <div class="match-body">
                             <div class="team-box left">${m.t1}</div>
                             <div class="score-box">
-                                <input type="number" class="ko-score" min="0" value="${m.s1!==null?m.s1:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 1, this.value)">
+                                <input type="number" class="input-score" min="0" value="${m.s1!==null?m.s1:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 1, this.value)">
                                 <span>-</span>
-                                <input type="number" class="ko-score" min="0" value="${m.s2!==null?m.s2:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 2, this.value)">
+                                <input type="number" class="input-score" min="0" value="${m.s2!==null?m.s2:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 2, this.value)">
                             </div>
                             <div class="team-box right">${m.t2}</div>
                         </div>
@@ -357,7 +372,7 @@
                             ${isAdmin ? `<div class="ko-inputs">
                                 <input type="number" class="ko-score" placeholder="90'" value="${m.s2!==null?m.s2:''}" onchange="updateKoScore('${roundKey}', ${index}, 's2', this.value)">
                                 ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e2!==null?m.e2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e2', this.value)">` : ''}
-                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p2!==null?m.p2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p2', this.value)">` : ''}
                             </div>` : `<span style="font-weight:bold; color:#38bdf8;">${scoreText}</span>`}
                         </div>
                         <div class="match-footer" style="border-top: 1px solid #475569;">
