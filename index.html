@@ -9,6 +9,8 @@
         h1 { text-align: center; color: #38bdf8; margin-bottom: 5px; font-size: 2.2rem; }
         .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 1rem; }
         .section-title { color: #f59e0b; border-bottom: 2px solid #1e293b; padding-bottom: 8px; font-size: 1.6rem; margin-top: 40px; }
+        
+        /* --- BRACKET --- */
         .bracket-outer { overflow-x: auto; background-color: #111827; padding: 20px; border-radius: 12px; border: 2px solid #38bdf8; }
         .bracket-container { display: flex; gap: 40px; min-width: 1600px; }
         .bracket-round { display: flex; flex-direction: column; justify-content: space-around; min-width: 260px; }
@@ -20,13 +22,16 @@
         .ko-team-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; font-size: 0.9rem; }
         .ko-team-name { font-weight: 500; max-width: 155px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .ko-inputs { display: flex; gap: 4px; }
-        .ko-score { width: 30px; background-color: #0b0f19; color: #fff; border: 1px solid #64748b; text-align: center; border-radius: 4px; padding: 2px; font-size: 0.85rem; }
+        .ko-score { width: 32px; background-color: #0b0f19; color: #fff; border: 1px solid #64748b; text-align: center; border-radius: 4px; padding: 4px; font-size: 0.85rem; font-weight: bold; }
         .ko-score.ext { border-color: #a855f7; }
         .ko-score.pen { border-color: #ec4899; }
+        
         .pos-badge { font-size: 0.7rem; padding: 1px 5px; border-radius: 3px; margin-right: 5px; font-weight: bold; }
         .b-p1 { background-color: #22c55e; color: #000; }
         .b-p2 { background-color: #3b82f6; color: #fff; }
         .b-p3 { background-color: #eab308; color: #000; }
+        
+        /* --- TABLES --- */
         .standings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .group-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
         .group-card h3 { margin-top: 0; color: #f8fafc; font-size: 1.1rem; border-bottom: 1px solid #334155; padding-bottom: 5px; }
@@ -38,30 +43,40 @@
         .row-p2 { border-left: 4px solid #3b82f6; background-color: rgba(59, 130, 246, 0.03); }
         .row-p3 { border-left: 4px solid #eab308; background-color: rgba(234, 179, 8, 0.03); }
         .best-thirds-box { background-color: #1e1b4b; border: 1px solid #4338ca; border-radius: 8px; padding: 15px; margin-top: 20px; }
-        .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 15px; }
-        .match-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
-        .match-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; }
-        .match-body { display: flex; align-items: center; justify-content: space-between; }
-        .team-box { font-size: 0.95rem; font-weight: 500; width: 40%; }
+        
+        /* --- DESIGN ΑΓΩΝΩΝ --- */
+        .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+        .match-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .match-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px; border-bottom: 1px solid #1e293b; padding-bottom: 6px; font-weight: 500; }
+        .match-body { display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 8px 0; }
+        
+        .team-box { font-size: 0.95rem; font-weight: bold; width: 40%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .team-box.left { text-align: left; }
         .team-box.right { text-align: right; }
-        .score-box { display: flex; align-items: center; gap: 6px; }
-        .match-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid #1e293b; font-size: 0.75rem; color: #94a3b8; text-align: center; }
+        
+        .score-box { display: flex; align-items: center; justify-content: center; gap: 8px; width: 20%; }
+        .input-score { width: 36px; height: 32px; background-color: #0b0f19; color: #fff; border: 1px solid #475569; text-align: center; padding: 4px; border-radius: 6px; font-weight: bold; font-size: 1rem; }
+        .input-score:focus { border-color: #38bdf8; outline: none; }
+        .score-divider { color: #64748b; font-weight: bold; }
+        
+        .match-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; font-size: 0.8rem; color: #94a3b8; text-align: center; }
         .match-footer a { color: #38bdf8; text-decoration: none; font-weight: bold; }
         .match-footer a:hover { text-decoration: underline; }
-        .admin-link-input { width: 100%; background-color: #0b0f19; color: #38bdf8; border: 1px solid #475569; border-radius: 4px; padding: 4px; font-size: 0.75rem; margin-top: 6px; }
+        .admin-link-input { width: 100%; background-color: #0b0f19; color: #38bdf8; border: 1px solid #475569; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; margin-top: 8px; }
+        .admin-link-input:focus { border-color: #ef4444; outline: none; }
+        
         .admin-panel { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
-        .save-btn { background-color: #22c55e; color: white; border: none; padding: 12px 24px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(34,197,94,0.3); }
+        .save-btn { background-color: #22c55e; color: white; border: none; padding: 12px 24px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(34,197,94,0.3); transition: background 0.2s; }
         .save-btn:hover { background-color: #16a34a; }
-        .mode-bar { background-color: #1e293b; border: 1px solid #38bdf8; padding: 10px; text-align: center; border-radius: 6px; margin-bottom: 20px; font-size: 0.95rem; font-weight: bold; }
-        .mode-admin { border-color: #ef4444; color: #f87171; }
-        .mode-viewer { border-color: #22c55e; color: #4ade80; }
+        .mode-bar { background-color: #1e293b; border: 1px solid #38bdf8; padding: 12px; text-align: center; border-radius: 6px; margin-bottom: 20px; font-size: 0.95rem; font-weight: bold; }
+        .mode-admin { border-color: #ef4444; color: #f87171; background-color: rgba(239, 68, 68, 0.02); }
+        .mode-viewer { border-color: #22c55e; color: #4ade80; background-color: rgba(34, 197, 94, 0.02); }
     </style>
 </head>
 <body>
 
     <h1>🏆 FIFA WORLD CUP 2026 TRACKER 🏆</h1>
-    <p class="subtitle">Live Διαχείριση Σκόρ & Διαφορετικών Links</p>
+    <p class="subtitle">Live Διαχείριση 72 Αγώνων Ομίλων & Knockout Φάσης</p>
 
     <div id="mode-status" class="mode-bar">🔄 Σύνδεση με τη βάση δεδομένων...</div>
 
@@ -81,9 +96,9 @@
         </div>
     </div>
 
-    <h2 class="section-title">📊 Πίνακες Κατάταξης (Αναλυτικά)</h2>
+    <h2 class="section-title">📊 Πίνακες Κατάταξης (12 Όμιλοι)</h2>
     <div class="best-thirds-box">
-        <h3 style="margin-top:0; color:#eab308;">🏅 Συνολική Κατάταξη Καλύτερων 3ων</h3>
+        <h3 style="margin-top:0; color:#eab308;">🏅 Συνολική Κατάταξη Καλύτερων 3ων (Προκρίνονται οι 8 πρώτοι)</h3>
         <table id="thirds-table">
             <thead><tr class="border-bottom"><th>#</th><th>Όμιλος</th><th>Ομάδα</th><th>Βαθ.</th><th>Γκολ Υπ.</th></tr></thead>
             <tbody id="thirds-tbody"></tbody>
@@ -108,45 +123,37 @@
             'C': ['Βραζιλία 🇧🇷', 'Μαρόκο 🇲🇦', 'Αϊτή 🇭🇹', 'Σκωτία 🏴󠁧󠁢󠁳󠁣󠁴󠁿'],
             'D': ['ΗΠΑ 🇺🇸', 'Παραγουάη 🇵🇾', 'Αυστραλία 🇦🇺', 'Τουρκία 🇹🇷'],
             'E': ['Γερμανία 🇩🇪', 'Κουρασάο 🇨🇼', 'Ακτή Ελεφαντοστού 🇨🇮', 'Εκουαδόρ 🇪🇨'],
-            'F': ['Ολλανδία 🇳🇱', 'Σουηδία 🇸🇪', 'Τυνησία 🇹🇳', 'Ιαπωνία 🇯🇵'],
+            'F': ['Ολλανδία 🇳🇱', 'Ιαπωνία 🇯🇵', 'Σουηδία 🇸🇪', 'Τυνησία 🇹🇳'],
             'G': ['Βέλγιο 🇧🇪', 'Αίγυπτος 🇪🇬', 'Ιράν 🇮🇷', 'Νέα Ζηλανδία 🇳🇿'],
-            'H': ['Ισπανία 🇪🇸', 'Σαουδική Αραβία 🇸🇦', 'Ουρουγουάη 🇺🇾', 'Πράσινο Ακρωτήριο 🇨🇻'],
-            'I': ['Γαλλία 🇫🇷', 'Σενεγάλη 🇸🇳', 'Νορβηγία 🇳🇴', 'Ιράκ 🇮🇶'],
+            'H': ['Ισπανία 🇪🇸', 'Πράσινο Ακρωτήριο 🇨🇻', 'Σαουδική Αραβία 🇸🇦', 'Ουρουγουάη 🇺🇾'],
+            'I': ['Γαλλία 🇫🇷', 'Σενεγάλη 🇸🇳', 'Ιράκ 🇮🇶', 'Νορβηγία 🇳🇴'],
             'J': ['Αργεντινή 🇦🇷', 'Αλγερία 🇩🇿', 'Αυστρία 🇦🇹', 'Ιορδανία 🇯🇴'],
             'K': ['Πορτογαλία 🇵🇹', 'Λαϊκή Δημ. Κονγκό 🇨🇩', 'Ουζμπεκιστάν 🇺🇿', 'Κολομβία 🇨🇴'],
-            'L': ['Αγγλία 🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Κροατία 🇭🇷', 'Γκάνα 🇬🇭', 'Παναμάς 🇵🇦']
+            'L': ['Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', 'Κροατία 🇭🇷', 'Γκάνα 🇬🇭', 'Παναμάς 🇵🇦']
         };
 
         const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
 
-        // Πλήρης λίστα και των 24 επίσημων αγώνων της 1ης αγωνιστικής
+        // Ενδεικτική αρχική λίστα (Αγωνιστικές 1,2,3). Όταν φορτώνει από το Cloud, θα δείχνει ό,τι έχεις αποθηκεύσει εκεί!
         let groupMatches = [
+            // ΟΜΙΛΟΣ Α
             { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
             { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
+            { id: 25, group: 'A', date: '18 Ιουνίου', time: '19:00', t1: 'Τσεχία 🇨🇿', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 26, group: 'A', date: '19 Ιουνίου', time: '04:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Κορέα 🇰🇷', s1: null, s2: null, link: defaultFifaLink },
+            { id: 49, group: 'A', date: '24 Ιουνίου', time: '23:00', t1: 'Τσεχία 🇨🇿', t2: 'Μεξικό 🇲🇽', s1: null, s2: null, link: defaultFifaLink },
+            { id: 50, group: 'A', date: '24 Ιουνίου', time: '23:00', t1: 'Νότια Αφρική 🇿🇦', t2: 'Νότια Κορέα 🇰🇷', s1: null, s2: null, link: defaultFifaLink },
+
+            // ΟΜΙΛΟΣ Β
             { id: 3, group: 'B', date: '12 Ιουνίου', time: '22:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
             { id: 4, group: 'B', date: '13 Ιουνίου', time: '22:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
-            { id: 5, group: 'C', date: '14 Ιουνίου', time: '01:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 6, group: 'C', date: '14 Ιουνίου', time: '04:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴󠁧󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 7, group: 'D', date: '13 Ιουνίου', time: '04:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
-            { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 9, group: 'E', date: '14 Ιουνίου', time: '22:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink },
-            { id: 10, group: 'E', date: '15 Ιουνίου', time: '22:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ 🇪🇨', s1: null, s2: null, link: defaultFifaLink },
-            { id: 11, group: 'F', date: '15 Ιουνίου', time: '01:00', t1: 'Ολλανδία 🇳🇱', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink },
-            { id: 12, group: 'F', date: '15 Ιουνίου', time: '04:00', t1: 'Τυνησία 🇹🇳', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink },
-            { id: 13, group: 'G', date: '16 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink },
-            { id: 14, group: 'G', date: '17 Ιουνίου', time: '22:00', t1: 'Ιράν 🇮🇷', t2: 'Νέα Ζηλανδία 🇳🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 15, group: 'H', date: '17 Ιουνίου', time: '01:00', t1: 'Ισπανία 🇪🇸', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 16, group: 'H', date: '17 Ιουνίου', time: '04:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink },
-            { id: 17, group: 'I', date: '18 Ιουνίου', time: '22:00', t1: 'Γαλλία 🇫🇷', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink },
-            { id: 18, group: 'I', date: '19 Ιουνίου', time: '22:00', t1: 'Νορβηγία 🇳🇴', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink },
-            { id: 19, group: 'J', date: '19 Ιουνίου', time: '01:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 20, group: 'J', date: '19 Ιουνίου', time: '04:00', t1: 'Αυστρία 🇦🇹', t2: 'Ιορδανία 🇯🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 21, group: 'K', date: '20 Ιουνίου', time: '22:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink },
-            { id: 22, group: 'K', date: '21 Ιουνίου', time: '22:00', t1: 'Ουζμπεκιστάν 🇺🇿', t2: 'Κολομβία 🇨🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 23, group: 'L', date: '21 Ιουνίου', time: '01:00', t1: 'Αγγλία 🏴󠁧󠁢󠁥󠁮󠁧󠁿', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 24, group: 'L', date: '21 Ιουνίου', time: '04:00', t1: 'Γκάνα 🇬🇭', t2: 'Παναμάς 🇵🇦', s1: null, s2: null, link: defaultFifaLink }
+            { id: 27, group: 'B', date: '18 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨🇭', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 28, group: 'B', date: '19 Ιουνίου', time: '01:00', t1: 'Καναδάς 🇨🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 51, group: 'B', date: '24 Ιουνίου', time: '20:00', t1: 'Ελβετία 🇨🇭', t2: 'Καναδάς 🇨🇦', s1: null, s2: null, link: defaultFifaLink },
+            { id: 52, group: 'B', date: '24 Ιουνίου', time: '20:00', t1: 'Βοσνία-Ερζεγοβίνη 🇧🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink }
         ];
 
+        // Αν η βάση δεδομένων σου έχει ήδη και τους 72 αγώνες, το script θα τους διαβάσει αυτόματα παρακάτω!
         let koMatches = {
             r32: Array.from({length: 16}, (_, i) => ({ id: `R32-${i+1}`, name: `Αγώνας ${73+i}`, date: '28-3 Ιουλ', label1: 'Προκρινόμενος', label2: 'Προκρινόμενος', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
             r16: Array.from({length: 8}, (_, i) => ({ id: `R16-${i+1}`, name: `Ματς ${89+i}`, date: '4-7 Ιουλ', label1: `Νικητής ${73+i*2}`, label2: `Νικητής ${74+i*2}`, t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink })),
@@ -158,7 +165,7 @@
         function setupUI() {
             const bar = document.getElementById('mode-status');
             if (isAdmin) {
-                bar.innerText = "🔴 Λειτουργία Διαχειριστή (Καταχώρησε σκορ & links απευθείας)";
+                bar.innerText = "🔴 Λειτουργία Διαχειριστή (Καταχώρηση σκορ & διαφορετικών Links)";
                 bar.className = "mode-bar mode-admin";
                 document.getElementById('admin-controls').style.display = 'flex';
             } else {
@@ -191,7 +198,7 @@
                     headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
                     body: JSON.stringify({ groupMatches, koMatches })
                 });
-                alert("✅ Οι αλλαγές αποθηκεύτηκαν στο Cloud και έγιναν Live!");
+                alert("✅ Επιτυχής αποθήκευση και των 72 αγώνων/knockouts στο Cloud!");
             } catch (e) { alert("❌ Σφάλμα αποθήκευσης."); }
             document.getElementById('admin-controls').style.opacity = '1';
         }
@@ -199,23 +206,27 @@
         function renderGroupMatches() {
             const container = document.getElementById('group-matches-container');
             container.innerHTML = '';
-            groupMatches.forEach(m => {
+            
+            // Ταξινόμηση ανά Όμιλο και μετά ανά ID αγώνα για να φαίνονται νοικοκυρεμένα
+            let sortedMatches = [...groupMatches].sort((a,b) => a.group.localeCompare(b.group) || a.id - b.id);
+            
+            sortedMatches.forEach(m => {
                 let disabledAttr = isAdmin ? '' : 'disabled';
                 container.innerHTML += `
                     <div class="match-card">
-                        <div class="match-header"><span>Όμιλος ${m.group}</span><span>📅 ${m.date} - 🕒 ${m.time}</span></div>
+                        <div class="match-header"><span>Όμιλος ${m.group} (#${m.id})</span><span>📅 ${m.date} - 🕒 ${m.time}</span></div>
                         <div class="match-body">
                             <div class="team-box left">${m.t1}</div>
                             <div class="score-box">
                                 <input type="number" class="input-score" min="0" value="${m.s1!==null?m.s1:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 1, this.value)">
-                                <span>-</span>
+                                <span class="score-divider">-</span>
                                 <input type="number" class="input-score" min="0" value="${m.s2!==null?m.s2:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 2, this.value)">
                             </div>
                             <div class="team-box right">${m.t2}</div>
                         </div>
                         <div class="match-footer">
-                            Περισσότερες πληροφορίες για τον αγώνα <a href="${m.link}" target="_blank">ΕΔΩ</a>.
-                            ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Βάλε διαφορετικό Link για αυτό το ματς..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateGroupLink(${m.id}, this.value)">` : ''}
+                            Πληροφορίες αγώνα <a href="${m.link}" target="_blank">ΕΔΩ</a>
+                            ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Ειδικό Link (π.χ. από fifa.com)..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateGroupLink(${m.id}, this.value)">` : ''}
                         </div>
                     </div>
                 `;
@@ -372,11 +383,11 @@
                             ${isAdmin ? `<div class="ko-inputs">
                                 <input type="number" class="ko-score" placeholder="90'" value="${m.s2!==null?m.s2:''}" onchange="updateKoScore('${roundKey}', ${index}, 's2', this.value)">
                                 ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e2!==null?m.e2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e2', this.value)">` : ''}
-                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p2!==null?m.p2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p2', this.value)">` : ''}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
                             </div>` : `<span style="font-weight:bold; color:#38bdf8;">${scoreText}</span>`}
                         </div>
                         <div class="match-footer" style="border-top: 1px solid #475569;">
-                            <a href="${m.link}" target="_blank">Περισσότερες πληροφορίες ΕΔΩ</a>
+                            <a href="${m.link}" target="_blank">Πληροφορίες ΕΔΩ</a>
                             ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Link αγώνα..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateKoLink('${roundKey}', ${index}, this.value)">` : ''}
                         </div>
                     </div>`;
