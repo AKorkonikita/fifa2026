@@ -68,20 +68,20 @@
         .input-score:focus { border-color: #38bdf8; outline: none; }
         .score-divider { color: #64748b; font-weight: bold; }
         
-        .match-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; font-size: 0.8rem; color: #94a3b8; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; width: 100%; }
+        .match-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; font-size: 0.85rem; color: #94a3b8; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; width: 100%; }
         
-        /* 🎨 STYLING ΓΙΑ ΤΑ ΕΠΙΣΗΜΑ ΚΟΥΜΠΙΑ-ΛΟΓΟΤΥΠΑ (SVG) */
-        .logo-link { display: inline-flex; align-items: center; justify-content: center; padding: 6px 14px; border-radius: 6px; border: 1px solid #334155; background-color: #1e293b; transition: all 0.2s ease; height: 32px; width: 75px; }
-        .logo-link svg { height: 100%; width: 100%; display: block; }
+        /* 🎨 ΝΕΟ ΕΠΑΓΓΕΛΜΑΤΙΚΟ STYLING: Καθαρά κείμενα μεταμορφωμένα σε κουμπιά-brands με CSS */
+        .logo-link { display: inline-flex; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif; font-weight: 800; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.5px; padding: 5px 14px; border-radius: 6px; height: 28px; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
         
-        .logo-link.fifa-btn { border-color: rgba(56, 189, 248, 0.4); }
-        .logo-link.fifa-btn:hover { background-color: #38bdf8; border-color: #38bdf8; }
-        .logo-link.fifa-btn:hover svg path { fill: #0b0f19 !important; }
+        /* FIFA Brand Style */
+        .logo-link.fifa-btn { color: #38bdf8; background-color: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); font-style: italic; font-weight: 900; }
+        .logo-link.fifa-btn:hover { background-color: #38bdf8; color: #0b0f19; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
         
-        .logo-link.opta-btn { border-color: rgba(245, 158, 11, 0.4); }
-        .logo-link.opta-btn:hover { background-color: #f59e0b; border-color: #f59e0b; }
-        .logo-link.opta-btn:hover svg .opta-txt { fill: #0b0f19 !important; }
-        .logo-link.opta-btn:hover svg .opta-circle { fill: #0b0f19 !important; }
+        /* Opta Brand Style */
+        .logo-link.opta-btn { color: #f59e0b; background-color: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3); font-weight: 800; }
+        .logo-link.opta-btn::before { content: "● "; color: #f59e0b; font-size: 0.6rem; margin-right: 4px; transition: color 0.2s; }
+        .logo-link.opta-btn:hover { background-color: #f59e0b; color: #0b0f19; border-color: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+        .logo-link.opta-btn:hover::before { color: #0b0f19; }
 
         .admin-link-input { width: 100%; background-color: #0b0f19; border: 1px solid #475569; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; margin-top: 8px; display: block; }
         .admin-link-input.f-inp { color: #38bdf8; }
@@ -206,9 +206,6 @@
         const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
         const defaultOptaLink = "https://optaplayerstats.statsperform.com/en_GB/soccer/fifa-world-cup-2026-canada-mexico-usa/873cbl9cd9butm4air0mugxzo/fixtures";
 
-        const fifaSvg = `<svg viewBox="0 0 100 30" preserveAspectRatio="xMidYMid meet"><path class="fifa-txt" d="M10 8h6v14h-6V8zm10 0h12v3h-9v3h8v3h-8v5h9v3H20V8zm15 0h6v14h-6V8zm10 0h12v3h-9v3h8v3h-8v5h9v3H45V8z" fill="#38bdf8"/></svg>`;
-        const optaSvg = `<svg viewBox="0 0 100 30" preserveAspectRatio="xMidYMid meet"><circle class="opta-circle" cx="15" cy="15" r="7" fill="#f59e0b"/><path class="opta-txt" d="M35 15c0 3.5-2.5 6-6 6s-6-2.5-6-6 2.5-6 6-6 6 2.5 6 6zm-9 0c0 2 1.2 3.5 3 3.5s3-1.5 3-3.5-1.2-3.5-3-3.5-3 1.5-3 3.5zm20.5-2.5c2 0 3.5 1.2 3.5 3.5V21h-2.5v-1.2c-.5.8-1.5 1.5-2.8 1.5-2.2 0-3.7-1.5-3.7-3.5s1.5-3.5 3.7-3.5c1.3 0 2.3.6 2.8 1.3v-.8c0-1.2-.8-1.8-2-1.8-1 0-2 .4-2.7 1l-1-1.7c1.2-1 2.8-1.6 4.7-1.6zm-1.8 6.2c0 1.2.8 1.8 1.8 1.8s1.8-.6 1.8-1.8v-1c-.4-.6-1-.9-1.8-.9s-1.8.5-1.8 1.9zm13.8-9.2v3h2.5v2h-2.5V21h-2.5v-6.5h-1.5v-2h1.5v-2h2.5z" fill="#f59e0b"/></svg>`;
-
         let groupMatches = [
             { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
@@ -254,7 +251,7 @@
             { id: 42, group: 'I', date: '23 Ιουνίου', time: '00:00', t1: 'Γαλλία 🇫🇷', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 43, group: 'I', date: '23 Ιουνίου', time: '03:00', t1: 'Νορβηγία 🇳🇴', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 44, group: 'J', date: '23 Ιουνίου', time: '06:00', t1: 'Ιορδανία 🇯🇴', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 45, group: 'K', date: '23 Ιουνίου', time: '20:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Ουζμπεκιστάν 🇺🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 45, group: 'K', date: '23 Ιουνίου', time: '20:00', t1: 'Πорτογαλία 🇵🇹', t2: 'Ουζμπεκιστάν 🇺🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 46, group: 'L', date: '23 Ιουνίου', time: '23:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Γκάνα 🇬🇭', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 47, group: 'L', date: '24 Ιουνίου', time: '02:00', t1: 'Παναμάς 🇵🇦', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 48, group: 'K', date: '24 Ιουνίου', time: '05:00', t1: 'Κολομβία 🇨🇴', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
@@ -405,8 +402,8 @@
                         </div>
                         <div class="match-footer">
                             <span>Πληροφορίες αγώνα:</span> 
-                            <a href="${m.link}" target="_blank" class="logo-link fifa-btn">${fifaSvg}</a> 
-                            <a href="${currentOpta}" target="_blank" class="logo-link opta-btn">${optaSvg}</a>
+                            <a href="${m.link}" target="_blank" class="logo-link fifa-btn">FIFA</a> 
+                            <a href="${currentOpta}" target="_blank" class="logo-link opta-btn">Opta</a>
                             ${isAdmin ? `
                                 <input type="text" class="admin-link-input f-inp" placeholder="🔗 Ειδικό Link FIFA..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateGroupLink(${m.id}, this.value)">
                                 <input type="text" class="admin-link-input o-inp" placeholder="🔗 Ειδικό Link Opta..." value="${m.linkOpta && m.linkOpta !== defaultOptaLink ? m.linkOpta : ''}" onchange="updateGroupOptaLink(${m.id}, this.value)">
@@ -607,8 +604,8 @@
                         </div>
                         <div class="match-footer" style="border-top: 1px solid #475569; margin-top:8px;">
                             <span>Πληροφορίες:</span> 
-                            <a href="${m.link}" target="_blank" class="logo-link fifa-btn">${fifaSvg}</a> 
-                            <a href="${currentOpta}" target="_blank" class="logo-link opta-btn">${optaSvg}</a>
+                            <a href="${m.link}" target="_blank" class="logo-link fifa-btn">FIFA</a> 
+                            <a href="${currentOpta}" target="_blank" class="logo-link opta-btn">Opta</a>
                             ${isAdmin ? `
                                 <input type="text" class="admin-link-input f-inp" placeholder="🔗 Ειδικό Link FIFA..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateKoLink('${roundKey}', ${index}, this.value)">
                                 <input type="text" class="admin-link-input o-inp" placeholder="🔗 Ειδικό Link Opta..." value="${m.linkOpta && m.linkOpta !== defaultOptaLink ? m.linkOpta : ''}" onchange="updateKoOptaLink('${roundKey}', ${index}, this.value)">
