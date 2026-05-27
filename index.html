@@ -68,15 +68,19 @@
         
         .match-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; font-size: 0.8rem; color: #94a3b8; text-align: center; width: 100%; }
         
-        /* 🎨 STYLING ΓΙΑ ΤΑ ΔΥΟ ΚΟΥΜΠΙΑ FIFA / OPTA */
+        /* 🎨 STYLING ΚΟΥΜΠΙΩΝ FIFA / OPTA */
         .link-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: bold; text-decoration: none; margin: 0 3px; font-size: 0.75rem; transition: background 0.2s; }
         .link-fifa { background-color: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
         .link-fifa:hover { background-color: #38bdf8; color: #0b0f19; }
         .link-opta { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
         .link-opta:hover { background-color: #f59e0b; color: #0b0f19; }
 
-        .admin-link-input { width: 100%; background-color: #0b0f19; color: #38bdf8; border: 1px solid #475569; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; margin-top: 8px; display: block; }
-        .admin-link-input:focus { border-color: #ef4444; outline: none; }
+        /* 🎛️ ADMIN INPUTS STYLING */
+        .admin-link-input { width: 100%; background-color: #0b0f19; border: 1px solid #475569; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; margin-top: 6px; display: block; }
+        .admin-link-input.f-inp { color: #38bdf8; }
+        .admin-link-input.f-inp:focus { border-color: #38bdf8; outline: none; }
+        .admin-link-input.o-inp { color: #f59e0b; }
+        .admin-link-input.o-inp:focus { border-color: #f59e0b; outline: none; }
         
         .admin-panel { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
         .save-btn { background-color: #22c55e; color: white; border: none; padding: 12px 24px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(34,197,94,0.3); transition: background 0.2s; }
@@ -89,7 +93,7 @@
 <body>
 
     <h1>🏆 FIFA WORLD CUP 2026 TRACKER 🏆</h1>
-    <p class="subtitle">Live Διαχείριση Σκόρ & Διπλών Links (FIFA & Opta) ανά Ημερομηνία</p>
+    <p class="subtitle">Live Διαχείριση Σκόρ & Ξεχωριστών Links (FIFA & Opta) ανά Ημερομηνία</p>
 
     <div id="mode-status" class="mode-bar">🔄 Σύνδεση με τη βάση δεδομένων...</div>
 
@@ -172,126 +176,125 @@
         };
 
         const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
-        // 🔗 Το σταθερό κεντρικό Link της Opta
         const defaultOptaLink = "https://optaplayerstats.statsperform.com/en_GB/soccer/fifa-world-cup-2026-canada-mexico-usa/873cbl9cd9butm4air0mugxzo/fixtures";
 
         let groupMatches = [
-            { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 3, group: 'B', date: '12 Ιουνίου', time: '22:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 4, group: 'D', date: '13 Ιουνίου', time: '04:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
-            { id: 5, group: 'B', date: '13 Ιουνίου', time: '22:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink },
-            { id: 6, group: 'C', date: '14 Ιουνίου', time: '01:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 7, group: 'C', date: '14 Ιουνίου', time: '04:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 9, group: 'E', date: '14 Ιουνίου', time: '20:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink },
-            { id: 10, group: 'F', date: '14 Ιουνίου', time: '23:00', t1: 'Ολλανδία 🇳🇱', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink },
-            { id: 11, group: 'E', date: '15 Ιουνίου', time: '02:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ 🇪🇨', s1: null, s2: null, link: defaultFifaLink },
-            { id: 12, group: 'F', date: '15 Ιουνίου', time: '05:00', t1: 'Σουηδία 🇸🇪', t2: 'Τυνησία 🇹🇳', s1: null, s2: null, link: defaultFifaLink },
-            { id: 13, group: 'H', date: '15 Ιουνίου', time: '19:00', t1: 'Ισπανία 🇪🇸', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink },
-            { id: 14, group: 'G', date: '15 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink },
-            { id: 15, group: 'H', date: '16 Ιουνίου', time: '01:00', t1: 'Σαουδική Αραβία 🇸🇦', t2: 'Ουρουγουάη 🇺🇾', s1: null, s2: null, link: defaultFifaLink },
-            { id: 16, group: 'G', date: '16 Ιουνίου', time: '04:00', t1: 'Ιράν 🇮🇷', t2: 'Νέα Ζηλανδία 🇳🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 17, group: 'I', date: '16 Ιουνίου', time: '22:00', t1: 'Γαλλία 🇫🇷', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink },
-            { id: 18, group: 'I', date: '17 Ιουνίου', time: '01:00', t1: 'Ιράκ 🇮🇶', t2: 'Νορβηγία 🇳🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 19, group: 'J', date: '17 Ιουνίου', time: '04:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 20, group: 'J', date: '17 Ιουνίου', time: '07:00', t1: 'Αυστρία 🇦🇹', t2: 'Ιορδανία 🇯🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 21, group: 'K', date: '17 Ιουνίου', time: '20:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink },
-            { id: 22, group: 'L', date: '17 Ιουνίου', time: '23:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 23, group: 'L', date: '18 Ιουνίου', time: '02:00', t1: 'Γκάνα 🇬🇭', t2: 'Παναμάς 🇵🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 24, group: 'K', date: '18 Ιουνίου', time: '05:00', t1: 'Ουζμπεκιστάν 🇺🇿', t2: 'Κολομβία 🇨🇴', s1: null, s2: null, link: defaultFifaLink },
-            { id: 25, group: 'A', date: '18 Ιουνίου', time: '19:00', t1: 'Τσεχία 🇨🇿', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 26, group: 'B', date: '18 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨🇭', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 27, group: 'B', date: '19 Ιουνίου', time: '01:00', t1: 'Καναδάς 🇨🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 28, group: 'A', date: '19 Ιουνίου', time: '04:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Κορέα 🇰🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 29, group: 'D', date: '19 Ιουνίου', time: '22:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Αυστραλία 🇦🇺', s1: null, s2: null, link: defaultFifaLink },
-            { id: 30, group: 'C', date: '20 Ιουνίου', time: '01:00', t1: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 31, group: 'C', date: '20 Ιουνίου', time: '03:30', t1: 'Βραζιλία 🇧🇷', t2: 'Αϊτή 🇭🇹', s1: null, s2: null, link: defaultFifaLink },
-            { id: 32, group: 'D', date: '20 Ιουνίου', time: '06:00', t1: 'Τουρκία 🇹🇷', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink },
-            { id: 33, group: 'F', date: '20 Ιουνίου', time: '20:00', t1: 'Ολλανδία 🇳🇱', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink },
-            { id: 34, group: 'E', date: '20 Ιουνίου', time: '23:00', t1: 'Γερμανία 🇩🇪', t2: 'Ακτή Ελεφαντοστού 🇨🇮', s1: null, s2: null, link: defaultFifaLink },
-            { id: 35, group: 'E', date: '21 Ιουνίου', time: '03:00', t1: 'Εκουαδόρ 🇪🇨', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink },
-            { id: 36, group: 'F', date: '21 Ιουνίου', time: '07:00', t1: 'Τυνησία 🇹🇳', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink },
-            { id: 37, group: 'H', date: '21 Ιουνίου', time: '19:00', t1: 'Ισπανία 🇪🇸', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 38, group: 'G', date: '21 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Ιράν 🇮🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 39, group: 'H', date: '22 Ιουνίου', time: '01:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink },
-            { id: 40, group: 'G', date: '22 Ιουνίου', time: '04:00', t1: 'Νέα Ζηλανδία 🇳🇿', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink },
-            { id: 41, group: 'J', date: '22 Ιουνίου', time: '20:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αυστρία 🇦🇹', s1: null, s2: null, link: defaultFifaLink },
-            { id: 42, group: 'I', date: '23 Ιουνίου', time: '00:00', t1: 'Γαλλία 🇫🇷', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink },
-            { id: 43, group: 'I', date: '23 Ιουνίου', time: '03:00', t1: 'Νορβηγία 🇳🇴', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink },
-            { id: 44, group: 'J', date: '23 Ιουνίου', time: '06:00', t1: 'Ιορδανία 🇯🇴', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 45, group: 'K', date: '23 Ιουνίου', time: '20:00', t1: 'Πорτογαλία 🇵🇹', t2: 'Ουζμπεκιστάν 🇺🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 46, group: 'L', date: '23 Ιουνίου', time: '23:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Γκάνα 🇬🇭', s1: null, s2: null, link: defaultFifaLink },
-            { id: 47, group: 'L', date: '24 Ιουνίου', time: '02:00', t1: 'Παναμάς 🇵🇦', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 48, group: 'K', date: '24 Ιουνίου', time: '05:00', t1: 'Κολομβία 🇨🇴', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink },
-            { id: 49, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨🇭', t2: 'Καναδάς 🇨🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 50, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Βοσνία-Ερζεγοβίνη 🇧🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 51, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', t2: 'Βραζιλία 🇧🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 52, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Μαρόκο 🇲🇦', t2: 'Αϊτή 🇭🇹', s1: null, s2: null, link: defaultFifaLink },
-            { id: 53, group: 'A', date: '25 Ιουνίου', time: '04:00', t1: 'Τσεχία 🇨🇿', t2: 'Μεξικό 🇲🇽', s1: null, s2: null, link: defaultFifaLink },
-            { id: 54, group: 'A', date: '25 Ιουνίου', time: '04:00', t1: 'Νότια Αφρική 🇿🇦', t2: 'Νότια Κορέα 🇰🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 55, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Κουρασάο 🇨🇼', t2: 'Ακτή Ελεφαντοστού 🇨🇮', s1: null, s2: null, link: defaultFifaLink },
-            { id: 56, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Εκουαδόρ 🇪🇨', t2: 'Γερμανία 🇩🇪', s1: null, s2: null, link: defaultFifaLink },
-            { id: 57, group: 'F', date: '26 Ιουνίου', time: '02:00', t1: 'Ιαπωνία 🇯🇵', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink },
-            { id: 58, group: 'F', date: '26 Ιουνίου', time: '02:00', t1: 'Τυνησία 🇹🇳', t2: 'Ολλανδία 🇳🇱', s1: null, s2: null, link: defaultFifaLink },
-            { id: 59, group: 'D', date: '26 Ιουνίου', time: '05:00', t1: 'Τουρκία 🇹🇷', t2: 'ΗΠΑ 🇺🇸', s1: null, s2: null, link: defaultFifaLink },
-            { id: 60, group: 'D', date: '26 Ιουνίου', time: '05:00', t1: 'Παραγουάη 🇵🇾', t2: 'Αυστραλία 🇦🇺', s1: null, s2: null, link: defaultFifaLink },
-            { id: 61, group: 'I', date: '26 Ιουνίου', time: '22:00', t1: 'Νορβηγία 🇳🇴', t2: 'Γαλλία 🇫🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 62, group: 'I', date: '26 Ιουνίου', time: '22:00', t1: 'Σενεγάλη 🇸🇳', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink },
-            { id: 63, group: 'H', date: '27 Ιουνίου', time: '03:00', t1: 'Πράσινο Ακρωτήριο 🇨🇻', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink },
-            { id: 64, group: 'H', date: '27 Ιουνίου', time: '03:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Ισπανία 🇪🇸', s1: null, s2: null, link: defaultFifaLink },
-            { id: 65, group: 'G', date: '27 Ιουνίου', time: '06:00', t1: 'Αίγυπτος 🇪🇬', t2: 'Ιράν 🇮🇷', s1: null, s2: null, link: defaultFifaLink },
-            { id: 66, group: 'G', date: '27 Ιουνίου', time: '06:00', t1: 'Νέα Ζηλανδία 🇳🇿', t2: 'Βέλγιο 🇧🇪', s1: null, s2: null, link: defaultFifaLink },
-            { id: 67, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Παναμάς 🇵🇦', t2: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 68, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Κροατία 🇭🇷', t2: 'Γκάνα 🇬🇭', s1: null, s2: null, link: defaultFifaLink },
-            { id: 69, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Κολομβία 🇨🇴', t2: 'Πορτογαλία 🇵🇹', s1: null, s2: null, link: defaultFifaLink },
-            { id: 70, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Λαϊκή Δημ. Κονγκό 🇨🇩', t2: 'Ουζμπεκιστάν 🇺🇿', s1: null, s2: null, link: defaultFifaLink },
-            { id: 71, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Αλγερία 🇩🇿', t2: 'Αυστρία 🇦🇹', s1: null, s2: null, link: defaultFifaLink },
-            { id: 72, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Ιορδανία 🇯🇴', t2: 'Αργεντινή 🇦🇷', s1: null, s2: null, link: defaultFifaLink }
+            { id: 1, group: 'A', date: '11 Ιουνίου', time: '22:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 2, group: 'A', date: '12 Ιουνίου', time: '05:00', t1: 'Νότια Κορέα 🇰🇷', t2: 'Τσεχία 🇨🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 3, group: 'B', date: '12 Ιουνίου', time: '22:00', t1: 'Καναδάς 🇨🇦', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 4, group: 'D', date: '13 Ιουνίου', time: '04:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 5, group: 'B', date: '13 Ιουνίου', time: '22:00', t1: 'Κατάρ 🇶🇦', t2: 'Ελβετία 🇨🇭', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 6, group: 'C', date: '14 Ιουνίου', time: '01:00', t1: 'Βραζιλία 🇧🇷', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 7, group: 'C', date: '14 Ιουνίου', time: '04:00', t1: 'Αϊτή 🇭🇹', t2: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία 🇦🇺', t2: 'Τουρκία 🇹🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 9, group: 'E', date: '14 Ιουνίου', time: '20:00', t1: 'Γερμανία 🇩🇪', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 10, group: 'F', date: '14 Ιουνίου', time: '23:00', t1: 'Ολλανδία 🇳🇱', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 11, group: 'E', date: '15 Ιουνίου', time: '02:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ 🇪🇨', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 12, group: 'F', date: '15 Ιουνίου', time: '05:00', t1: 'Σουηδία 🇸🇪', t2: 'Τυνησία 🇹🇳', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 13, group: 'H', date: '15 Ιουνίου', time: '19:00', t1: 'Ισπανία 🇪🇸', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 14, group: 'G', date: '15 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 15, group: 'H', date: '16 Ιουνίου', time: '01:00', t1: 'Σαουδική Αραβία 🇸🇦', t2: 'Ουρουγουάη 🇺🇾', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 16, group: 'G', date: '16 Ιουνίου', time: '04:00', t1: 'Ιράν 🇮🇷', t2: 'Νέα Ζηλανδία 🇳🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 17, group: 'I', date: '16 Ιουνίου', time: '22:00', t1: 'Γαλλία 🇫🇷', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 18, group: 'I', date: '17 Ιουνίου', time: '01:00', t1: 'Ιράκ 🇮🇶', t2: 'Νορβηγία 🇳🇴', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 19, group: 'J', date: '17 Ιουνίου', time: '04:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 20, group: 'J', date: '17 Ιουνίου', time: '07:00', t1: 'Αυστρία 🇦🇹', t2: 'Ιορδανία 🇯🇴', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 21, group: 'K', date: '17 Ιουνίου', time: '20:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 22, group: 'L', date: '17 Ιουνίου', time: '23:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 23, group: 'L', date: '18 Ιουνίου', time: '02:00', t1: 'Γκάνα 🇬🇭', t2: 'Παναμάς 🇵🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 24, group: 'K', date: '18 Ιουνίου', time: '05:00', t1: 'Ουζμπεκιστάν 🇺🇿', t2: 'Κολομβία 🇨🇴', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 25, group: 'A', date: '18 Ιουνίου', time: '19:00', t1: 'Τσεχία 🇨🇿', t2: 'Νότια Αφρική 🇿🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 26, group: 'B', date: '18 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨🇭', t2: 'Βοσνία-Ερζεγοβίνη 🇧🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 27, group: 'B', date: '19 Ιουνίου', time: '01:00', t1: 'Καναδάς 🇨🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 28, group: 'A', date: '19 Ιουνίου', time: '04:00', t1: 'Μεξικό 🇲🇽', t2: 'Νότια Κορέα 🇰🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 29, group: 'D', date: '19 Ιουνίου', time: '22:00', t1: 'ΗΠΑ 🇺🇸', t2: 'Αυστραλία 🇦🇺', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 30, group: 'C', date: '20 Ιουνίου', time: '01:00', t1: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', t2: 'Μαρόκο 🇲🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 31, group: 'C', date: '20 Ιουνίου', time: '03:30', t1: 'Βραζιλία 🇧🇷', t2: 'Αϊτή 🇭🇹', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 32, group: 'D', date: '20 Ιουνίου', time: '06:00', t1: 'Τουρκία 🇹🇷', t2: 'Παραγουάη 🇵🇾', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 33, group: 'F', date: '20 Ιουνίου', time: '20:00', t1: 'Ολλανδία 🇳🇱', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 34, group: 'E', date: '20 Ιουνίου', time: '23:00', t1: 'Γερμανία 🇩🇪', t2: 'Ακτή Ελεφαντοστού 🇨🇮', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 35, group: 'E', date: '21 Ιουνίου', time: '03:00', t1: 'Εκουαδόρ 🇪🇨', t2: 'Κουρασάο 🇨🇼', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 36, group: 'F', date: '21 Ιουνίου', time: '07:00', t1: 'Τυνησία 🇹🇳', t2: 'Ιαπωνία 🇯🇵', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 37, group: 'H', date: '21 Ιουνίου', time: '19:00', t1: 'Ισπανία 🇪🇸', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 38, group: 'G', date: '21 Ιουνίου', time: '22:00', t1: 'Βέλγιο 🇧🇪', t2: 'Ιράν 🇮🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 39, group: 'H', date: '22 Ιουνίου', time: '01:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Πράσινο Ακρωτήριο 🇨🇻', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 40, group: 'G', date: '22 Ιουνίου', time: '04:00', t1: 'Νέα Ζηλανδία 🇳🇿', t2: 'Αίγυπτος 🇪🇬', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 41, group: 'J', date: '22 Ιουνίου', time: '20:00', t1: 'Αργεντινή 🇦🇷', t2: 'Αυστρία 🇦🇹', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 42, group: 'I', date: '23 Ιουνίου', time: '00:00', t1: 'Γαλλία 🇫🇷', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 43, group: 'I', date: '23 Ιουνίου', time: '03:00', t1: 'Νορβηγία 🇳🇴', t2: 'Σενεγάλη 🇸🇳', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 44, group: 'J', date: '23 Ιουνίου', time: '06:00', t1: 'Ιορδανία 🇯🇴', t2: 'Αλγερία 🇩🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 45, group: 'K', date: '23 Ιουνίου', time: '20:00', t1: 'Πορτογαλία 🇵🇹', t2: 'Ουζμπεκιστάν 🇺🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 46, group: 'L', date: '23 Ιουνίου', time: '23:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Γκάνα 🇬🇭', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 47, group: 'L', date: '24 Ιουνίου', time: '02:00', t1: 'Παναμάς 🇵🇦', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 48, group: 'K', date: '24 Ιουνίου', time: '05:00', t1: 'Κολομβία 🇨🇴', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 49, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨hxx', t2: 'Καναδάς 🇨🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 50, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Βοσνία-Ερζεγοβίνη 🇧🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 51, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', t2: 'Βραζιλία 🇧🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 52, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Μαρόκο 🇲🇦', t2: 'Αϊτή 🇭🇹', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 53, group: 'A', date: '25 Ιουνίου', time: '04:00', t1: 'Τσεχία 🇨🇿', t2: 'Μεξικό 🇲🇽', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 54, group: 'A', date: '25 Ιουνίου', time: '04:00', t1: 'Νότια Αφρική 🇿🇦', t2: 'Νότια Κορέα 🇰🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 55, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Κουρασάο 🇨🇼', t2: 'Ακτή Ελεφαντοστού 🇨🇮', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 56, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Εκουαδόρ 🇪🇨', t2: 'Γερμανία 🇩🇪', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 57, group: 'F', date: '26 Ιουνίου', time: '02:00', t1: 'Ιαπωνία 🇯🇵', t2: 'Σουηδία 🇸🇪', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 58, group: 'F', date: '26 Ιουνίου', time: '02:00', t1: 'Τυνησία 🇹🇳', t2: 'Ολλανδία 🇳🇱', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 59, group: 'D', date: '26 Ιουνίου', time: '05:00', t1: 'Τουρκία 🇹🇷', t2: 'ΗΠΑ 🇺🇸', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 60, group: 'D', date: '26 Ιουνίου', time: '05:00', t1: 'Παραγουάη 🇵🇾', t2: 'Αυστραλία 🇦🇺', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 61, group: 'I', date: '26 Ιουνίου', time: '22:00', t1: 'Νορβηγία 🇳🇴', t2: 'Γαλλία 🇫🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 62, group: 'I', date: '26 Ιουνίου', time: '22:00', t1: 'Σενεγάλη 🇸🇳', t2: 'Ιράκ 🇮🇶', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 63, group: 'H', date: '27 Ιουνίου', time: '03:00', t1: 'Πράσινο Ακρωτήριο 🇨🇻', t2: 'Σαουδική Αραβία 🇸🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 64, group: 'H', date: '27 Ιουνίου', time: '03:00', t1: 'Ουρουγουάη 🇺🇾', t2: 'Ισπανία 🇪🇸', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 65, group: 'G', date: '27 Ιουνίου', time: '06:00', t1: 'Αίγυπτος 🇪🇬', t2: 'Ιράν 🇮🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 66, group: 'G', date: '27 Ιουνίου', time: '06:00', t1: 'Νέα Ζηλανδία 🇳🇿', t2: 'Βέλγιο 🇧🇪', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 67, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Παναμάς 🇵🇦', t2: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 68, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Κροατία 🇭🇷', t2: 'Γκάνα 🇬🇭', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 69, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Κολομβία 🇨🇴', t2: 'Πορτογαλία 🇵🇹', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 70, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Λαϊκή Δημ. Κονγκό 🇨🇩', t2: 'Ουζμπεκιστάν 🇺🇿', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 71, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Αλγερία 🇩🇿', t2: 'Αυστρία 🇦🇹', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 72, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Ιορδανία 🇯🇴', t2: 'Αργεντινή 🇦🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
         ];
 
         let koMatches = {
             r32: [
-                { id: 'R32-1', name: 'Αγώνας 73', date: '28 Ιουν | 22:00', label1: '2ος Ομίλου Α', label2: '2ος Ομίλου Β', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-2', name: 'Αγώνας 74', date: '29 Ιουν | 20:00', label1: '1ος Ομίλου C', label2: '2ος Ομίλου F', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-3', name: 'Αγώνας 75', date: '29 Ιουν | 23:30', label1: '1ος Ομίλου Ε', label2: '3ος (A/B/C/D/F)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-4', name: 'Αγώνας 76', date: '30 Ιουν | 04:00', label1: '1ος Ομίλου F', label2: '2ος Ομίλου C', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-5', name: 'Αγώνας 77', date: '30 Ιουν | 20:00', label1: '2ος Ομίλου Ε', label2: '2ος Ομίλου Ι', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-6', name: 'Αγώνας 78', date: '1 Ιουλ | 00:00', label1: '1ος Ομίλου Ι', label2: '3ος (C/D/F/G/H)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-7', name: 'Αγώνας 79', date: '1 Ιουλ | 04:00', label1: '1ος Ομίλου Α', label2: '3ος (C/E/F/H/I)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-8', name: 'Αγώνας 80', date: '1 Ιουλ | 19:00', label1: '1ος Ομίλου L', label2: '3ος (E/H/I/J/K)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-9', name: 'Αγώνας 81', date: '1 Ιουλ | 23:00', label1: '1ος Ομίλου G', label2: '3ος (A/E/H/I/J)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-10', name: 'Αγώνας 82', date: '2 Ιουλ | 03:00', label1: '1ος Ομίλου D', label2: '3ος (B/E/F/I/J)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-11', name: 'Αγώνας 83', date: '2 Ιουλ | 22:00', label1: '1ος Ομίλου Η', label2: '2ος Ομίλου J', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-12', name: 'Αγώνας 84', date: '3 Ιουλ | 02:00', label1: '2ος Ομίλου Κ', label2: '2ος Ομίλου L', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-13', name: 'Αγώνας 85', date: '3 Ιουλ | 06:00', label1: '1ος Ομίλου Β', label2: '3ος (E/F/G/I/J)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-14', name: 'Αγώνας 86', date: '3 Ιουλ | 21:00', label1: '2ος Ομίλου D', label2: '2ος Ομίλου G', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-15', name: 'Αγώνας 87', date: '4 Ιουλ | 01:00', label1: '1ος Ομίλου J', label2: '2ος Ομίλου Η', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R32-16', name: 'Αγώνας 88', date: '4 Ιουλ | 04:30', label1: '1ος Ομίλου Κ', label2: '3ος (D/E/I/J/L)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }
+                { id: 'R32-1', name: 'Αγώνας 73', date: '28 Ιουν | 22:00', label1: '2ος Ομίλου Α', label2: '2ος Ομίλου Β', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-2', name: 'Αγώνας 74', date: '29 Ιουν | 20:00', label1: '1ος Ομίλου C', label2: '2ος Ομίλου F', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-3', name: 'Αγώνας 75', date: '29 Ιουν | 23:30', label1: '1ος Ομίλου Ε', label2: '3ος (A/B/C/D/F)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-4', name: 'Αγώνας 76', date: '30 Ιουν | 04:00', label1: '1ος Ομίλου F', label2: '2ος Ομίλου C', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-5', name: 'Αγώνας 77', date: '30 Ιουν | 20:00', label1: '2ος Ομίλου Ε', label2: '2ος Ομίλου Ι', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-6', name: 'Αγώνας 78', date: '1 Ιουλ | 00:00', label1: '1ος Ομίλου Ι', label2: '3ος (C/D/F/G/H)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-7', name: 'Αγώνας 79', date: '1 Ιουλ | 04:00', label1: '1ος Ομίλου Α', label2: '3ος (C/E/F/H/I)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-8', name: 'Αγώνας 80', date: '1 Ιουλ | 19:00', label1: '1ος Ομίλου L', label2: '3ος (E/H/I/J/K)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-9', name: 'Αγώνας 81', date: '1 Ιουλ | 23:00', label1: '1ος Ομίλου G', label2: '3ος (A/E/H/I/J)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-10', name: 'Αγώνας 82', date: '2 Ιουλ | 03:00', label1: '1ος Ομίλου D', label2: '3ος (B/E/F/I/J)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-11', name: 'Αγώνας 83', date: '2 Ιουλ | 22:00', label1: '1ος Ομίλου Η', label2: '2ος Ομίλου J', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-12', name: 'Αγώνας 84', date: '3 Ιουλ | 02:00', label1: '2ος Ομίλου Κ', label2: '2ος Ομίλου L', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-13', name: 'Αγώνας 85', date: '3 Ιουλ | 06:00', label1: '1ος Ομίλου Β', label2: '3ος (E/F/G/I/J)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-14', name: 'Αγώνας 86', date: '3 Ιουλ | 21:00', label1: '2ος Ομίλου D', label2: '2ος Ομίλου G', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-15', name: 'Αγώνας 87', date: '4 Ιουλ | 01:00', label1: '1ος Ομίλου J', label2: '2ος Ομίλου Η', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R32-16', name: 'Αγώνας 88', date: '4 Ιουλ | 04:30', label1: '1ος Ομίλου Κ', label2: '3ος (D/E/I/J/L)', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
             ],
             r16: [
-                { id: 'R16-1', name: 'Ματς 89', date: '4 Ιουλ | 20:00', label1: 'Νικητής 73', label2: 'Νικητής 75', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-2', name: 'Ματς 90', date: '5 Ιουλ | 00:00', label1: 'Νικητής 74', label2: 'Νικητής 77', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-3', name: 'Ματς 91', date: '5 Ιουλ | 23:00', label1: 'Νικητής 76', label2: 'Νικητής 78', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-4', name: 'Ματς 92', date: '6 Ιουλ | 03:00', label1: 'Νικητής 79', label2: 'Νικητής 80', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-5', name: 'Ματς 93', date: '6 Ιουλ | 22:00', label1: 'Νικητής 83', label2: 'Νικητής 84', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-6', name: 'Ματς 94', date: '7 Ιουλ | 03:00', label1: 'Νικητής 81', label2: 'Νικητής 82', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-7', name: 'Ματς 95', date: '7 Ιουλ | 19:00', label1: 'Νικητής 86', label2: 'Νικητής 88', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'R16-8', name: 'Ματς 96', date: '7 Ιουλ | 23:00', label1: 'Νικητής 85', label2: 'Νικητής 87', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }
+                { id: 'R16-1', name: 'Ματς 89', date: '4 Ιουλ | 20:00', label1: 'Νικητής 73', label2: 'Νικητής 75', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-2', name: 'Ματς 90', date: '5 Ιουλ | 00:00', label1: 'Νικητής 74', label2: 'Νικητής 77', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-3', name: 'Ματς 91', date: '5 Ιουλ | 23:00', label1: 'Νικητής 76', label2: 'Νικητής 78', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-4', name: 'Ματς 92', date: '6 Ιουλ | 03:00', label1: 'Νικητής 79', label2: 'Νικητής 80', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-5', name: 'Ματς 93', date: '6 Ιουλ | 22:00', label1: 'Νικητής 83', label2: 'Νικητής 84', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-6', name: 'Ματς 94', date: '7 Ιουλ | 03:00', label1: 'Νικητής 81', label2: 'Νικητής 82', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-7', name: 'Ματς 95', date: '7 Ιουλ | 19:00', label1: 'Νικητής 86', label2: 'Νικητής 88', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'R16-8', name: 'Ματς 96', date: '7 Ιουλ | 23:00', label1: 'Νικητής 85', label2: 'Νικητής 87', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
             ],
             qf: [
-                { id: 'QF-1', name: 'Προημ. 97', date: '9 Ιουλ | 23:00', label1: 'Νικητής 89', label2: 'Νικητής 90', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'QF-2', name: 'Προημ. 98', date: '10 Ιουλ | 22:00', label1: 'Νικητής 93', label2: 'Νικητής 94', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'QF-3', name: 'Προημ. 99', date: '12 Ιουλ | 00:00', label1: 'Νικητής 91', label2: 'Νικητής 92', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'QF-4', name: 'Προημ. 100', date: '12 Ιουλ | 04:00', label1: 'Νικητής 95', label2: 'Νικητής 96', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }
+                { id: 'QF-1', name: 'Προημ. 97', date: '9 Ιουλ | 23:00', label1: 'Νικητής 89', label2: 'Νικητής 90', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'QF-2', name: 'Προημ. 98', date: '10 Ιουλ | 22:00', label1: 'Νικητής 93', label2: 'Νικητής 94', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'QF-3', name: 'Προημ. 99', date: '12 Ιουλ | 00:00', label1: 'Νικητής 91', label2: 'Νικητής 92', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'QF-4', name: 'Προημ. 100', date: '12 Ιουλ | 04:00', label1: 'Νικητής 95', label2: 'Νικητής 96', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
             ],
             sf: [
-                { id: 'SF-1', name: 'Ημιτελ. 101', date: '14 Ιουλ | 22:00', label1: 'Νικητής 97', label2: 'Νικητής 98', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'SF-2', name: 'Ημιτελ. 102', date: '15 Ιουλ | 22:00', label1: 'Νικητής 99', label2: 'Νικητής 100', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }
+                { id: 'SF-1', name: 'Ημιτελ. 101', date: '14 Ιουλ | 22:00', label1: 'Νικητής 97', label2: 'Νικητής 98', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'SF-2', name: 'Ημιτελ. 102', date: '15 Ιουλ | 22:00', label1: 'Νικητής 99', label2: 'Νικητής 100', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
             ],
             f: [
-                { id: '3RD', name: 'ΜΙΚΡΟΣ ΤΕΛΙΚΟΣ', date: '19 Ιουλ | 00:00', label1: 'Ηττημένος 101', label2: 'Ηττημένος 102', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink },
-                { id: 'F-1', name: 'ΤΕΛΙΚΟΣ', date: '19 Ιουλ | 22:00', label1: 'Νικητής 101', label2: 'Νικητής 102', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink }
+                { id: '3RD', name: 'ΜΙΚΡΟΣ ΤΕΛΙΚΟΣ', date: '19 Ιουλ | 00:00', label1: 'Ηττημένος 101', label2: 'Ηττημένος 102', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+                { id: 'F-1', name: 'ΤΕΛΙΚΟΣ', date: '19 Ιουλ | 22:00', label1: 'Νικητής 101', label2: 'Νικητής 102', t1: '', t2: '', s1: null, s2: null, e1: null, e2: null, p1: null, p2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
             ]
         };
 
@@ -331,7 +334,7 @@
                     headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
                     body: JSON.stringify({ groupMatches, koMatches })
                 });
-                alert("✅ Επιτυχής αποθήκευση και των 72 αγώνων στο Cloud!");
+                alert("✅ Επιτυχής αποθήκευση όλων των σκορ και των διπλών συνδέσμων στο Cloud!");
             } catch (e) { alert("❌ Σφάλμα αποθήκευσης."); }
             document.getElementById('admin-controls').style.opacity = '1';
         }
@@ -355,6 +358,8 @@
 
             sortedMatches.forEach(m => {
                 let disabledAttr = isAdmin ? '' : 'disabled';
+                let currentOpta = m.linkOpta || defaultOptaLink;
+                
                 container.innerHTML += `
                     <div class="match-card">
                         <div class="match-header"><span>Όμιλος ${m.group} (#${m.id})</span><span>📅 ${m.date} - 🕒 ${m.time}</span></div>
@@ -370,8 +375,11 @@
                         <div class="match-footer">
                             Πληροφορίες αγώνα: 
                             <a href="${m.link}" target="_blank" class="link-badge link-fifa">FIFA</a> 
-                            <a href="${defaultOptaLink}" target="_blank" class="link-badge link-opta">Opta</a>
-                            ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Ειδικό Link FIFA για αυτό το ματς..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateGroupLink(${m.id}, this.value)">` : ''}
+                            <a href="${currentOpta}" target="_blank" class="link-badge link-opta">Opta</a>
+                            ${isAdmin ? `
+                                <input type="text" class="admin-link-input f-inp" placeholder="🔗 Ειδικό Link FIFA..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateGroupLink(${m.id}, this.value)">
+                                <input type="text" class="admin-link-input o-inp" placeholder="🔗 Ειδικό Link Opta..." value="${m.linkOpta && m.linkOpta !== defaultOptaLink ? m.linkOpta : ''}" onchange="updateGroupOptaLink(${m.id}, this.value)">
+                            ` : ''}
                         </div>
                     </div>
                 `;
@@ -388,6 +396,11 @@
         function updateGroupLink(id, val) {
             let m = groupMatches.find(x => x.id === id);
             m.link = val.trim() === '' ? defaultFifaLink : val.trim();
+        }
+
+        function updateGroupOptaLink(id, val) {
+            let m = groupMatches.find(x => x.id === id);
+            m.linkOpta = val.trim() === '' ? defaultOptaLink : val.trim();
         }
 
         function calculateTournament() {
@@ -530,6 +543,7 @@
                 let scoreText = (m.s1 !== null && m.s2 !== null) ? `${m.s1} - ${m.s2}` : "";
                 if (showExtAndPen && m.e1 !== null) scoreText += ` (παρ. ${m.e1}-${m.e2})`;
                 if (showExtAndPen && m.p1 !== null) scoreText += ` (πέν. ${m.p1}-${m.p2})`;
+                let currentOpta = m.linkOpta || defaultOptaLink;
 
                 div.innerHTML += `
                     <div class="ko-match-card">
@@ -551,8 +565,11 @@
                         <div class="match-footer" style="border-top: 1px solid #475569;">
                             Πληροφορίες αγώνα: 
                             <a href="${m.link}" target="_blank" class="link-badge link-fifa">FIFA</a> 
-                            <a href="${defaultOptaLink}" target="_blank" class="link-badge link-opta">Opta</a>
-                            ${isAdmin ? `<input type="text" class="admin-link-input" placeholder="🔗 Link αγώνα..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateKoLink('${roundKey}', ${index}, this.value)">` : ''}
+                            <a href="${currentOpta}" target="_blank" class="link-badge link-opta">Opta</a>
+                            ${isAdmin ? `
+                                <input type="text" class="admin-link-input f-inp" placeholder="🔗 Ειδικό Link FIFA..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateKoLink('${roundKey}', ${index}, this.value)">
+                                <input type="text" class="admin-link-input o-inp" placeholder="🔗 Ειδικό Link Opta..." value="${m.linkOpta && m.linkOpta !== defaultOptaLink ? m.linkOpta : ''}" onchange="updateKoOptaLink('${roundKey}', ${index}, this.value)">
+                            ` : ''}
                         </div>
                     </div>`;
             });
@@ -566,6 +583,10 @@
 
         function updateKoLink(roundKey, index, val) {
             koMatches[roundKey][index].link = val.trim() === '' ? defaultFifaLink : val.trim();
+        }
+
+        function updateKoOptaLink(roundKey, index, val) {
+            koMatches[roundKey][index].linkOpta = val.trim() === '' ? defaultOptaLink : val.trim();
         }
 
         if (!isAdmin) { setInterval(loadCloudData, 20000); }
