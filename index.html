@@ -68,15 +68,13 @@
         
         .match-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; font-size: 0.8rem; color: #94a3b8; text-align: center; width: 100%; }
         
-        /* 🎨 STYLING ΚΟΥΜΠΙΩΝ FIFA / OPTA */
         .link-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: bold; text-decoration: none; margin: 0 3px; font-size: 0.75rem; transition: background 0.2s; }
         .link-fifa { background-color: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
         .link-fifa:hover { background-color: #38bdf8; color: #0b0f19; }
         .link-opta { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
         .link-opta:hover { background-color: #f59e0b; color: #0b0f19; }
 
-        /* 🎛️ ADMIN INPUTS STYLING */
-        .admin-link-input { width: 100%; background-color: #0b0f19; border: 1px solid #475569; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; margin-top: 6px; display: block; }
+        .admin-link-input { width: 100%; background-color: #0b0f19; color: #38bdf8; border: 1px solid #475569; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; margin-top: 8px; display: block; }
         .admin-link-input.f-inp { color: #38bdf8; }
         .admin-link-input.f-inp:focus { border-color: #38bdf8; outline: none; }
         .admin-link-input.o-inp { color: #f59e0b; }
@@ -85,9 +83,20 @@
         .admin-panel { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
         .save-btn { background-color: #22c55e; color: white; border: none; padding: 12px 24px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(34,197,94,0.3); transition: background 0.2s; }
         .save-btn:hover { background-color: #16a34a; }
-        .mode-bar { background-color: #1e293b; border: 1px solid #38bdf8; padding: 12px; text-align: center; border-radius: 6px; margin-bottom: 20px; font-size: 0.95rem; font-weight: bold; }
+        
+        /* 🎨 ΔΙΟΡΘΩΜΕΝΟ: Διάταξη κορυφής με Flexbox για να μπει η Σημείωση στα δεξιά */
+        .top-bar-container { display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; margin-bottom: 20px; width: 100%; }
+        .mode-bar { flex: 1; min-width: 300px; background-color: #1e293b; border: 1px solid #38bdf8; padding: 15px; text-align: center; border-radius: 8px; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         .mode-admin { border-color: #ef4444; color: #f87171; background-color: rgba(239, 68, 68, 0.02); }
         .mode-viewer { border-color: #22c55e; color: #4ade80; background-color: rgba(34, 197, 94, 0.02); }
+        
+        /* Σημείωση Κανόνων Opta */
+        .rules-disclaimer { flex: 1; min-width: 450px; background-color: #111827; border: 1px solid #f59e0b; border-left: 5px solid #f59e0b; padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.4; color: #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
+        .rules-disclaimer p { margin: 0 0 10px 0; font-weight: 500; }
+        .rules-disclaimer ul { margin: 0; padding-left: 20px; }
+        .rules-disclaimer li { margin-bottom: 4px; }
+        .rules-disclaimer a { color: #f59e0b; text-decoration: none; font-weight: bold; }
+        .rules-disclaimer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -95,7 +104,19 @@
     <h1>🏆 FIFA WORLD CUP 2026 TRACKER 🏆</h1>
     <p class="subtitle">Live Διαχείριση Σκόρ & Ξεχωριστών Links (FIFA & Opta) ανά Ημερομηνία</p>
 
-    <div id="mode-status" class="mode-bar">🔄 Σύνδεση με τη βάση δεδομένων...</div>
+    <div class="top-bar-container">
+        <div id="mode-status" class="mode-bar">🔄 Σύνδεση με τη βάση δεδομένων...</div>
+        
+        <div class="rules-disclaimer">
+            <p>📝 <b>Σημείωση:</b> Σύμφωνα με τους όρους της σελίδας μας, η διευθέτηση θα γίνεται με βάση τα στοιχεία που παρέχει η <b>Opta</b>, εξαιρουμένων των αγορών για κάρτες και κόρνερ.</p>
+            <span>Περισσότερες πληροφορίες μπορείς να βρεις στον οδηγό παιγνίου:</span>
+            <ul>
+                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.5%20%CE%94%CE%B9%CE%B5%CF%85%CE%B8%CE%AD%CF%84%CE%B7%CF%83%CE%B7%20%CF%83%CF%84%CE%AF%CF%82%20%CE%B1%CE%B3%CE%BF%CF%81%CE%AC%CF%82." target="_blank">3.1.5 Διευθέτηση των στοιχημάτων</a></li>
+                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.23.6%20%CE%95%CE%B9%CE%B4%CE%B9%CE%BA%CE%AC%20%CF%80%CE%B1%CE%B9%CE%BA%CF%84%CF%8E%CE%BD" target="_blank">3.1.23.6 Ειδικά παικτών</a></li>
+                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%91%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
+            </ul>
+        </div>
+    </div>
 
     <div id="admin-controls" class="admin-panel" style="display: none;">
         <button class="save-btn" onclick="saveCloudData()">☁️ Αποθήκευση Αλλαγών στο Cloud (Live)</button>
@@ -227,7 +248,7 @@
             { id: 46, group: 'L', date: '23 Ιουνίου', time: '23:00', t1: 'Αγγλία 🏴\u200D󠁢󠁥󠁮󠁧󠁿', t2: 'Γκάνα 🇬🇭', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 47, group: 'L', date: '24 Ιουνίου', time: '02:00', t1: 'Παναμάς 🇵🇦', t2: 'Κροατία 🇭🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 48, group: 'K', date: '24 Ιουνίου', time: '05:00', t1: 'Κολομβία 🇨🇴', t2: 'Λαϊκή Δημ. Κονγκό 🇨🇩', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 49, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨hxx', t2: 'Καναδάς 🇨🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 49, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Ελβετία 🇨🇭', t2: 'Καναδάς 🇨🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 50, group: 'B', date: '24 Ιουνίου', time: '22:00', t1: 'Βοσνία-Ερζεγοβίνη 🇧🇦', t2: 'Κατάρ 🇶🇦', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 51, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Σκωτία 🏴\u200D󠁢󠁳󠁣󠁴󠁿', t2: 'Βραζιλία 🇧🇷', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 52, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Μαρόκο 🇲🇦', t2: 'Αϊτή 🇭🇹', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
@@ -334,7 +355,7 @@
                     headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
                     body: JSON.stringify({ groupMatches, koMatches })
                 });
-                alert("✅ Επιτυχής αποθήκευση όλων των σκορ και των διπλών συνδέσμων στο Cloud!");
+                alert("✅ Επιτυχής αποθήκευση και των 72 αγώνων στο Cloud!");
             } catch (e) { alert("❌ Σφάλμα αποθήκευσης."); }
             document.getElementById('admin-controls').style.opacity = '1';
         }
