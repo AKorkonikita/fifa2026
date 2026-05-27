@@ -206,7 +206,6 @@
         const defaultFifaLink = "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures?country=GR&wtw-filter=ALL";
         const defaultOptaLink = "https://optaplayerstats.statsperform.com/en_GB/soccer/fifa-world-cup-2026-canada-mexico-usa/873cbl9cd9butm4air0mugxzo/fixtures";
 
-        // 🖼️ ΕΠΙΣΗΜΑ ΚΑΘΑΡΑ SVG ΛΟΓΟΤΥΠΑ ΧΩΡΙΣ ΠΕΡΙΤΤΟ ΚΕΙΜΕΝΟ
         const fifaSvg = `<svg viewBox="0 0 100 30" preserveAspectRatio="xMidYMid meet"><path class="fifa-txt" d="M10 8h6v14h-6V8zm10 0h12v3h-9v3h8v3h-8v5h9v3H20V8zm15 0h6v14h-6V8zm10 0h12v3h-9v3h8v3h-8v5h9v3H45V8z" fill="#38bdf8"/></svg>`;
         const optaSvg = `<svg viewBox="0 0 100 30" preserveAspectRatio="xMidYMid meet"><circle class="opta-circle" cx="15" cy="15" r="7" fill="#f59e0b"/><path class="opta-txt" d="M35 15c0 3.5-2.5 6-6 6s-6-2.5-6-6 2.5-6 6-6 6 2.5 6 6zm-9 0c0 2 1.2 3.5 3 3.5s3-1.5 3-3.5-1.2-3.5-3-3.5-3 1.5-3 3.5zm20.5-2.5c2 0 3.5 1.2 3.5 3.5V21h-2.5v-1.2c-.5.8-1.5 1.5-2.8 1.5-2.2 0-3.7-1.5-3.7-3.5s1.5-3.5 3.7-3.5c1.3 0 2.3.6 2.8 1.3v-.8c0-1.2-.8-1.8-2-1.8-1 0-2 .4-2.7 1l-1-1.7c1.2-1 2.8-1.6 4.7-1.6zm-1.8 6.2c0 1.2.8 1.8 1.8 1.8s1.8-.6 1.8-1.8v-1c-.4-.6-1-.9-1.8-.9s-1.8.5-1.8 1.9zm13.8-9.2v3h2.5v2h-2.5V21h-2.5v-6.5h-1.5v-2h1.5v-2h2.5z" fill="#f59e0b"/></svg>`;
 
@@ -580,4 +579,61 @@
             matchesList.forEach((m, index) => {
                 let showExtAndPen = (m.s1 !== null && m.s2 !== null && m.s1 === m.s2);
                 let name1 = m.t1 ? m.t1 : m.label1; let name2 = m.t2 ? m.t2 : m.label2;
-                let disabledAttr = isAdmin ?
+                let disabledAttr = isAdmin ? '' : 'disabled';
+
+                let winnerInfo = getWinnerDetails(m);
+                let row1Class = (winnerInfo.winner === 1) ? "ko-winner-highlight" : "";
+                let row2Class = (winnerInfo.winner === 2) ? "ko-winner-highlight" : "";
+                let currentOpta = m.linkOpta || defaultOptaLink;
+
+                div.innerHTML += `
+                    <div class="ko-match-card">
+                        <div class="ko-date">${m.name} | 📅 ${m.date}</div>
+                        <div class="ko-team-row ${row1Class}">
+                            <span class="ko-team-name">${name1}</span>
+                            ${isAdmin ? `<div class="ko-inputs">
+                                <input type="number" class="ko-score" placeholder="90'" value="${m.s1!==null?m.s1:''}" onchange="updateKoScore('${roundKey}', ${index}, 's1', this.value)">
+                                ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e1!==null?m.e1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e1', this.value)">` : ''}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p1', this.value)">` : ''}
+                            </div>` : (m.s1 !== null ? `<span style="font-weight:bold;">${m.s1}</span>` : '')}
+                        </div>
+                        <div class="ko-team-row ${row2Class}">
+                            <span class="ko-team-name">${name2}</span>
+                            ${isAdmin ? `<div class="ko-inputs">
+                                <input type="number" class="ko-score" placeholder="90'" value="${m.s2!==null?m.s2:''}" onchange="updateKoScore('${roundKey}', ${index}, 's2', this.value)">
+                                ${showExtAndPen ? `<input type="number" class="ko-score ext" placeholder="EX" value="${m.e2!==null?m.e2:''}" onchange="updateKoScore('${roundKey}', ${index}, 'e2', this.value)">` : ''}
+                                ${showExtAndPen ? `<input type="number" class="ko-score pen" placeholder="PE" value="${m.p1!==null?m.p1:''}" onchange="updateKoScore('${roundKey}', ${index}, 'p2', this.value)">` : ''}
+                            </div>` : (m.s2 !== null ? `<span style="font-weight:bold;">${m.s2}</span>` : '')}
+                        </div>
+                        <div class="match-footer" style="border-top: 1px solid #475569; margin-top:8px;">
+                            <span>Πληροφορίες:</span> 
+                            <a href="${m.link}" target="_blank" class="logo-link fifa-btn">${fifaSvg}</a> 
+                            <a href="${currentOpta}" target="_blank" class="logo-link opta-btn">${optaSvg}</a>
+                            ${isAdmin ? `
+                                <input type="text" class="admin-link-input f-inp" placeholder="🔗 Ειδικό Link FIFA..." value="${m.link !== defaultFifaLink ? m.link : ''}" onchange="updateKoLink('${roundKey}', ${index}, this.value)">
+                                <input type="text" class="admin-link-input o-inp" placeholder="🔗 Ειδικό Link Opta..." value="${m.linkOpta && m.linkOpta !== defaultOptaLink ? m.linkOpta : ''}" onchange="updateKoOptaLink('${roundKey}', ${index}, this.value)">
+                            ` : ''}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function updateKoScore(roundKey, index, field, val) {
+            let scoreVal = val === '' ? null : parseInt(val);
+            koMatches[roundKey][index][field] = scoreVal;
+            updateAllKnockoutRounds();
+        }
+
+        function updateKoLink(roundKey, index, val) {
+            koMatches[roundKey][index].link = val.trim() === '' ? defaultFifaLink : val.trim();
+        }
+
+        function updateKoOptaLink(roundKey, index, val) {
+            koMatches[roundKey][index].linkOpta = val.trim() === '' ? defaultOptaLink : val.trim();
+        }
+
+        if (!isAdmin) { setInterval(loadCloudData, 20000); }
+        setupUI(); loadCloudData();
+    </script>
+</body>
+</html>
