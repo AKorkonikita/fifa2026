@@ -58,9 +58,8 @@
         .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
         .match-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
         .match-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px; border-bottom: 1px solid #1e293b; padding-bottom: 6px; font-weight: 500; }
-        
-        /* 🛠️ Προσθήκη transition και border-radius για τα highlights των ομάδων στους ομίλους */
         .match-body { display: grid; grid-template-columns: 40% 20% 40%; align-items: center; width: 100%; margin: 8px 0; }
+        
         .team-box { font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; padding: 4px 6px; border-radius: 4px; transition: background 0.2s, color 0.2s; }
         .team-box.left { text-align: left; }
         .team-box.right { text-align: right; }
@@ -119,7 +118,7 @@
             <ul>
                 <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.5%20%CE%94%CE%B9%CE%B5%CF%85%CE%B8%CE%AD%CF%84%CE%B7%CF%83%CE%B7%20%CF%84%CF%89%CE%BD%20%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B7%CE%BC%CE%AC%CF%84%CF%89%CE%BD" target="_blank">3.1.5 Διευθέτηση των στοιχημάτων</a></li>
                 <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.23.6%20%CE%95%CE%B9%CE%B4%CE%B9%CE%BA%CE%AC%20%CF%80%CE%B1%CE%B9%CE%BA%CF%84%CF%8E%CE%BD" target="_blank">3.1.23.6 Ειδικά παικτών</a></li>
-                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%91%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
+                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%A1%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
             </ul>
         </div>
     </div>
@@ -274,7 +273,7 @@
             { id: 66, group: 'G', date: '27 Ιουνίου', time: '06:00', t1: 'Νέα Ζηλανδία NZ', t2: 'Βέλγιο BE', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 67, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Παναμάς PA', t2: 'Αγγλία ENG', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 68, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Κροατία HR', t2: 'Γκάνα GH', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 69, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Κολομβία CO', t2: 'Πорτογαλία PT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 69, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Κολομβία CO', t2: 'Πορτογαλία PT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 70, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Λαϊκή Δημ. Κονγκό CD', t2: 'Ουζμπεκιστάν UZ', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 71, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Αλγερία DZ', t2: 'Αυστρία AT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 72, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Ιορδανία JO', t2: 'Αργεντινή AR', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
@@ -337,6 +336,15 @@
             }
         }
 
+        // 🧠 ΣΥΝΑΡΤΗΣΗ ΚΑΘΑΡΙΣΜΟΥ ΣΗΜΑΙΩΝ (Για να διαβάζει σωστά τις παλιές εγγραφές της βάσης)
+        function cleanTeamName(name) {
+            if (!name) return "";
+            return name
+                .replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
         async function loadCloudData() {
             try {
                 let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -344,8 +352,15 @@
                 });
                 let json = await res.json();
                 if(json.record && json.record.groupMatches && json.record.groupMatches.length > 0) {
-                    groupMatches = json.record.groupMatches;
-                    koMatches = json.record.koMatches;
+                    // 🌟 Εξομάλυνση των παλαιών ονομάτων με σημαίες που έρχονται από το Cloud
+                    groupMatches = json.record.groupMatches.map(m => ({
+                        ...m,
+                        t1: cleanTeamName(m.t1),
+                        t2: cleanTeamName(m.t2)
+                    }));
+                    if(json.record.koMatches) {
+                        koMatches = json.record.koMatches;
+                    }
                 }
             } catch (e) { console.error(e); }
             renderGroupMatches();
@@ -387,7 +402,6 @@
                 let disabledAttr = isAdmin ? '' : 'disabled';
                 let currentOpta = m.linkOpta || defaultOptaLink;
                 
-                // 🔍 ΥΠΟΛΟΓΙΣΜΟΣ HIGHLIGHT ΓΙΑ ΤΟ ΠΟΙΟΣ ΚΕΡΔΙΣΕ ΣΤΟΝ ΟΜΙΛΟ
                 let h1 = (m.s1 !== null && m.s2 !== null && m.s1 > m.s2) ? "ko-winner-highlight" : "";
                 let h2 = (m.s1 !== null && m.s2 !== null && m.s2 > m.s1) ? "ko-winner-highlight" : "";
 
