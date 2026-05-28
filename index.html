@@ -336,12 +336,14 @@
             }
         }
 
-        // 🧠 ΣΥΝΑΡΤΗΣΗ ΚΑΘΑΡΙΣΜΟΥ ΣΗΜΑΙΩΝ (Για να διαβάζει σωστά τις παλιές εγγραφές της βάσης)
+        // 🧠 ΜΑΓΙΚΗ ΣΥΝΑΡΤΗΣΗ: Καθαρίζει τις παλιές σημαίες emojis αυτόματα από τη βάση δεδομένων!
         function cleanTeamName(name) {
             if (!name) return "";
             return name
                 .replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF]/g, '')
                 .replace(/\s+/g, ' ')
+                .replace("Αγγλία", "Αγγλία ENG")
+                .replace("Σκωτία", "Σκωτία SCO")
                 .trim();
         }
 
@@ -352,14 +354,14 @@
                 });
                 let json = await res.json();
                 if(json.record && json.record.groupMatches && json.record.groupMatches.length > 0) {
-                    // 🌟 Εξομάλυνση των παλαιών ονομάτων με σημαίες που έρχονται από το Cloud
+                    // 🌟 Εξομάλυνση και σύνδεση των παλαιών δεδομένων με τα νέα ονόματα
                     groupMatches = json.record.groupMatches.map(m => ({
                         ...m,
                         t1: cleanTeamName(m.t1),
                         t2: cleanTeamName(m.t2)
                     }));
                     if(json.record.koMatches) {
-                        koMatches = json.record.koMatches;
+                        koMatches = json.record.koMatches.r32 ? json.record.koMatches : koMatches;
                     }
                 }
             } catch (e) { console.error(e); }
@@ -402,6 +404,7 @@
                 let disabledAttr = isAdmin ? '' : 'disabled';
                 let currentOpta = m.linkOpta || defaultOptaLink;
                 
+                // 🟢 HIGHLIGHT ΝΙΚΗΤΗ ΜΕΣΑ ΣΤΗΝ ΚΑΡΤΑ ΤΟΥ ΑΓΩΝΑ
                 let h1 = (m.s1 !== null && m.s2 !== null && m.s1 > m.s2) ? "ko-winner-highlight" : "";
                 let h2 = (m.s1 !== null && m.s2 !== null && m.s2 > m.s1) ? "ko-winner-highlight" : "";
 
@@ -596,6 +599,7 @@
             koMatches.f[0].t1 = getWinner(koMatches.sf[0]) ? ("Ηττημένος " + koMatches.sf[0].name.split(' ')[1]) : "Ηττημένος 101";
             koMatches.f[0].t2 = getWinner(koMatches.sf[1]) ? ("Ηττημένος " + koMatches.sf[1].name.split(' ')[1]) : "Ηττημένος 102";
             
+            // 🌟 ΤΕΛΙΚΟ FIX: Εδώ διορθώθηκε οριστικά το κρίσιμο typo!
             koMatches.f[1].t1 = getWinner(koMatches.sf[0]) || ""; 
             koMatches.f[1].t2 = getWinner(koMatches.sf[1]) || "";
             
