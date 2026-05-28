@@ -58,12 +58,12 @@
         .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
         .match-card { background-color: #161e2e; border: 1px solid #1e293b; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
         .match-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px; border-bottom: 1px solid #1e293b; padding-bottom: 6px; font-weight: 500; }
-        .match-body { display: grid; grid-template-columns: 40% 20% 40%; align-items: center; width: 100%; margin: 8px 0; }
         
-        .team-box { font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
-        .logo-link { display: inline-flex; align-items: center; justify-content: center; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 900; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.5px; padding: 5px 16px; border-radius: 6px; height: 30px; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
-        .team-box.left { text-align: left; padding-right: 6px; }
-        .team-box.right { text-align: right; padding-left: 6px; }
+        /* 🛠️ Προσθήκη transition και border-radius για τα highlights των ομάδων στους ομίλους */
+        .match-body { display: grid; grid-template-columns: 40% 20% 40%; align-items: center; width: 100%; margin: 8px 0; }
+        .team-box { font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; padding: 4px 6px; border-radius: 4px; transition: background 0.2s, color 0.2s; }
+        .team-box.left { text-align: left; }
+        .team-box.right { text-align: right; }
         
         .score-box { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; }
         .input-score { width: 34px; height: 32px; background-color: #0b0f19; color: #fff; border: 1px solid #475569; text-align: center; padding: 4px; border-radius: 6px; font-weight: bold; font-size: 1rem; }
@@ -73,6 +73,7 @@
         .match-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #1e293b; font-size: 0.85rem; color: #94a3b8; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; width: 100%; }
         .match-footer span { font-weight: 500; color: #94a3b8; }
 
+        .logo-link { display: inline-flex; align-items: center; justify-content: center; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 900; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.5px; padding: 5px 16px; border-radius: 6px; height: 30px; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
         .logo-link.fifa-btn { color: #38bdf8; background-color: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); font-style: italic; }
         .logo-link.fifa-btn:hover { background-color: #38bdf8; color: #0b0f19; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
         
@@ -118,7 +119,7 @@
             <ul>
                 <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.5%20%CE%94%CE%B9%CE%B5%CF%85%CE%B8%CE%AD%CF%84%CE%B7%CF%83%CE%B7%20%CF%84%CF%89%CE%BD%20%CF%83%CF%84%CE%BF%CE%B9%CF%87%CE%B7%CE%BC%CE%AC%CF%84%CF%89%CE%BD" target="_blank">3.1.5 Διευθέτηση των στοιχημάτων</a></li>
                 <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.23.6%20%CE%95%CE%B9%CE%B4%CE%B9%CE%BA%CE%AC%20%CF%80%CE%B1%CE%B9%CE%BA%CF%84%CF%8E%CE%BD" target="_blank">3.1.23.6 Ειδικά παικτών</a></li>
-                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%9加%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
+                <li><a href="https://www.stoiximan.gr/arthro/odigos-paigniou/947/#:~:text=3.1.84%20%CE%91%CE%B3%CE%BF%CF%81%CE%AD%CF%82%20%CF%83%CF%85%CE%BD%CE%BF%CE%BB%CE%B9%CE%BA%CF%8E%CE%BD" target="_blank">3.1.84 Αγορές συνολικών / ομαδικών στατιστικών παιχνιδιού</a></li>
             </ul>
         </div>
     </div>
@@ -191,7 +192,7 @@
             'B': ['Καναδάς CA', 'Βοσνία-Ερζεγοβίνη BA', 'Κατάρ QA', 'Ελβετία CH'],
             'C': ['Βραζιλία BR', 'Μαρόκο MA', 'Αϊτή HT', 'Σκωτία SCO'],
             'D': ['ΗΠΑ US', 'Παραγουάη PY', 'Αυστραλία AU', 'Τουρκία TR'],
-            'E': ['Γερμανία DE', 'Κουρασάο CW', 'Ακτή Ελεφαντοστού 🇨🇮', 'Εκουαδόρ EC'],
+            'E': ['Γερμανία DE', 'Κουρασάο CW', 'Ακτή Ελεφαντοστού CI', 'Εκουαδόρ EC'],
             'F': ['Ολλανδία NL', 'Ιαπωνία JP', 'Σουηδία SE', 'Τυνησία TN'],
             'G': ['Βέλγιο BE', 'Αίγυπτος EG', 'Ιράν IR', 'Νέα Ζηλανδία NZ'],
             'H': ['Ισπανία ES', 'Πράσινο Ακρωτήριο CV', 'Σαουδική Αραβία SA', 'Ουρουγουάη UY'],
@@ -215,7 +216,7 @@
             { id: 8, group: 'D', date: '14 Ιουνίου', time: '07:00', t1: 'Αυστραλία AU', t2: 'Τουρκία TR', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 9, group: 'E', date: '14 Ιουνίου', time: '20:00', t1: 'Γερμανία DE', t2: 'Κουρασάο CW', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 10, group: 'F', date: '14 Ιουνίου', time: '23:00', t1: 'Ολλανδία NL', t2: 'Ιαπωνία JP', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 11, group: 'E', date: '15 Ιουνίου', time: '02:00', t1: 'Ακτή Ελεφαντοστού 🇨🇮', t2: 'Εκουαδόρ EC', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 11, group: 'E', date: '15 Ιουνίου', time: '02:00', t1: 'Ακτή Ελεφαντοστού CI', t2: 'Εκουαδόρ EC', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 12, group: 'F', date: '15 Ιουνίου', time: '05:00', t1: 'Σουηδία SE', t2: 'Τυνησία TN', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 13, group: 'H', date: '15 Ιουνίου', time: '19:00', t1: 'Ισπανία ES', t2: 'Πράσινο Ακρωτήριο CV', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 14, group: 'G', date: '15 Ιουνίου', time: '22:00', t1: 'Βέλγιο BE', t2: 'Αίγυπτος EG', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
@@ -238,7 +239,7 @@
             { id: 31, group: 'C', date: '20 Ιουνίου', time: '03:30', t1: 'Βραζιλία BR', t2: 'Αϊτή HT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 32, group: 'D', date: '20 Ιουνίου', time: '06:00', t1: 'Τουρκία TR', t2: 'Παραγουάη PY', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 33, group: 'F', date: '20 Ιουνίου', time: '20:00', t1: 'Ολλανδία NL', t2: 'Σουηδία SE', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 34, group: 'E', date: '20 Ιουνίου', time: '23:00', t1: 'Γερμανία DE', t2: 'Ακτή Ελεφαντοστού 🇨🇮', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 34, group: 'E', date: '20 Ιουνίου', time: '23:00', t1: 'Γερμανία DE', t2: 'Ακτή Ελεφαντοστού CI', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 35, group: 'E', date: '21 Ιουνίου', time: '03:00', t1: 'Εκουαδόρ EC', t2: 'Κουρασάο CW', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 36, group: 'F', date: '21 Ιουνίου', time: '07:00', t1: 'Τυνησία TN', t2: 'Ιαπωνία JP', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 37, group: 'H', date: '21 Ιουνίου', time: '19:00', t1: 'Ισπανία ES', t2: 'Σαουδική Αραβία SA', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
@@ -259,7 +260,7 @@
             { id: 52, group: 'C', date: '25 Ιουνίου', time: '01:00', t1: 'Μαρόκο MA', t2: 'Αϊτή HT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 53, group: 'A', date: '25 Ιουνίου', time: '04:00', t1: 'Τσεχία CZ', t2: 'Μεξικό MX', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 54, group: 'A', date: '25 Ιουνίου', time: '04:00', t1: 'Νότια Αφρική ZA', t2: 'Νότια Κορέα KR', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 55, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Κουρασάο CW', t2: 'Ακτή Ελεφαντοστού 🇨🇮', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 55, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Κουρασάο CW', t2: 'Ακτή Ελεφαντοστού CI', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 56, group: 'E', date: '25 Ιουνίου', time: '23:00', t1: 'Εκουαδόρ EC', t2: 'Γερμανία DE', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 57, group: 'F', date: '26 Ιουνίου', time: '02:00', t1: 'Ιαπωνία JP', t2: 'Σουηδία SE', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 58, group: 'F', date: '26 Ιουνίου', time: '02:00', t1: 'Τυνησία TN', t2: 'Ολλανδία NL', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
@@ -273,7 +274,7 @@
             { id: 66, group: 'G', date: '27 Ιουνίου', time: '06:00', t1: 'Νέα Ζηλανδία NZ', t2: 'Βέλγιο BE', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 67, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Παναμάς PA', t2: 'Αγγλία ENG', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 68, group: 'L', date: '28 Ιουνίου', time: '00:00', t1: 'Κροατία HR', t2: 'Γκάνα GH', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
-            { id: 69, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Κολομβία CO', t2: 'Πορτογαλία PT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
+            { id: 69, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Κολομβία CO', t2: 'Πорτογαλία PT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 70, group: 'K', date: '28 Ιουνίου', time: '02:30', t1: 'Λαϊκή Δημ. Κονγκό CD', t2: 'Ουζμπεκιστάν UZ', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 71, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Αλγερία DZ', t2: 'Αυστρία AT', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink },
             { id: 72, group: 'J', date: '28 Ιουνίου', time: '05:00', t1: 'Ιορδανία JO', t2: 'Αργεντινή AR', s1: null, s2: null, link: defaultFifaLink, linkOpta: defaultOptaLink }
@@ -386,17 +387,21 @@
                 let disabledAttr = isAdmin ? '' : 'disabled';
                 let currentOpta = m.linkOpta || defaultOptaLink;
                 
+                // 🔍 ΥΠΟΛΟΓΙΣΜΟΣ HIGHLIGHT ΓΙΑ ΤΟ ΠΟΙΟΣ ΚΕΡΔΙΣΕ ΣΤΟΝ ΟΜΙΛΟ
+                let h1 = (m.s1 !== null && m.s2 !== null && m.s1 > m.s2) ? "ko-winner-highlight" : "";
+                let h2 = (m.s1 !== null && m.s2 !== null && m.s2 > m.s1) ? "ko-winner-highlight" : "";
+
                 container.innerHTML += `
                     <div class="match-card">
                         <div class="match-header"><span>Όμιλος ${m.group} (#${m.id})</span><span>📅 ${m.date} - 🕒 ${m.time}</span></div>
                         <div class="match-body">
-                            <div class="team-box left">${m.t1}</div>
+                            <div class="team-box left ${h1}">${m.t1}</div>
                             <div class="score-box">
                                 <input type="number" class="input-score" min="0" value="${m.s1!==null?m.s1:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 1, this.value)">
                                 <span class="score-divider">-</span>
                                 <input type="number" class="input-score" min="0" value="${m.s2!==null?m.s2:''}" ${disabledAttr} onchange="updateGroupScore(${m.id}, 2, this.value)">
                             </div>
-                            <div class="team-box right">${m.t2}</div>
+                            <div class="team-box right ${h2}">${m.t2}</div>
                         </div>
                         <div class="match-footer">
                             <span>Πληροφορίες αγώνα:</span> 
@@ -577,7 +582,6 @@
             koMatches.f[0].t1 = getWinner(koMatches.sf[0]) ? ("Ηττημένος " + koMatches.sf[0].name.split(' ')[1]) : "Ηττημένος 101";
             koMatches.f[0].t2 = getWinner(koMatches.sf[1]) ? ("Ηττημένος " + koMatches.sf[1].name.split(' ')[1]) : "Ηττημένος 102";
             
-            // 🛠️ ΕΔΩ ΗΤΑΝ ΤΟ ΛΑΘΟΣ: Διορθώθηκε από html.f[1].t1 σε koMatches.f[1].t1
             koMatches.f[1].t1 = getWinner(koMatches.sf[0]) || ""; 
             koMatches.f[1].t2 = getWinner(koMatches.sf[1]) || "";
             
@@ -633,20 +637,6 @@
                         </div>
                     </div>`;
             });
-        }
-
-        function updateKoScore(roundKey, index, field, val) {
-            let scoreVal = val === '' ? null : parseInt(val);
-            koMatches[roundKey][index][field] = scoreVal;
-            updateAllKnockoutRounds();
-        }
-
-        function updateKoLink(roundKey, index, val) {
-            koMatches[roundKey][index].link = val.trim() === '' ? defaultFifaLink : val.trim();
-        }
-
-        function updateKoOptaLink(roundKey, index, val) {
-            koMatches[roundKey][index].linkOpta = val.trim() === '' ? defaultOptaLink : val.trim();
         }
 
         if (!isAdmin) { setInterval(loadCloudData, 20000); }
